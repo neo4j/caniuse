@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class CanIUseTest {
 
-    @CsvSource({"false,community,4,4", "false,enterprise,4,4", "true,community,5,0", "true,enterprise,5,0"})
+    @CsvSource({"false,community,4,3", "false,enterprise,4,3", "true,community,4,4", "true,enterprise,4,4"})
     @ParameterizedTest
     void supports_calls_in_transactions(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
         assertThat(canIUse(Cypher.callInTransactions()).withNeo4j(neo4j)).isEqualTo(result);
@@ -114,5 +114,31 @@ class CanIUseTest {
                 Neo4j.builder(neo4j).environment(Neo4jEnvironment.AURA).build();
 
         assertThat(canIUse(Dbms.multiDatabase()).withNeo4j(neo4jAura)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,3,5",
+            "false,enterprise,3,5",
+            "false,community,4,0",
+            "false,enterprise,4,0",
+            "true,community,4,3",
+            "true,enterprise,4,3",
+    })
+    @ParameterizedTest
+    void supports_show_indexes(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.showIndexes()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,3,5",
+            "false,enterprise,3,5",
+            "false,community,4,0",
+            "false,enterprise,4,0",
+            "true,community,4,3",
+            "true,enterprise,4,3",
+    })
+    @ParameterizedTest
+    void supports_show_constraints(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.showConstraints()).withNeo4j(neo4j)).isEqualTo(result);
     }
 }
