@@ -52,6 +52,11 @@ public class Neo4jVersion implements Comparable<Neo4jVersion> {
         return signum(patch - other.patch);
     }
 
+    // visible for testing
+    int major() {
+        return major;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Neo4jVersion)) {
