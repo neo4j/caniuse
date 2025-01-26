@@ -35,13 +35,31 @@ class CanIUseTest {
         "false,enterprise,4,4",
         "false,community,5,0",
         "false,enterprise,5,0",
-        "true,community,5,18",
+        "false,community,5,18",
         "true,enterprise,5,18"
     })
     @ParameterizedTest
     void supports_calls_in_transactions_with_composite_databases(
             boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
         assertThat(canIUse(Cypher.callInTransactionsWithCompositeDatabases()).withNeo4j(neo4j))
+                .isEqualTo(result);
+    }
+
+    @CsvSource({
+        "false,community,4,4",
+        "false,enterprise,4,4",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "false,community,5,18",
+        "false,enterprise,5,18"
+    })
+    @ParameterizedTest
+    void supports_calls_in_transactions_with_composite_databases_in_aura(
+            boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        Neo4j neo4jAura =
+                Neo4j.builder(neo4j).environment(Neo4jEnvironment.AURA).build();
+
+        assertThat(canIUse(Cypher.callInTransactionsWithCompositeDatabases()).withNeo4j(neo4jAura))
                 .isEqualTo(result);
     }
 
@@ -103,6 +121,17 @@ class CanIUseTest {
     }
 
     @CsvSource({
+        "false,community,4,4",
+        "false,enterprise,4,4",
+        "false,community,5,0",
+        "true,enterprise,5,0",
+    })
+    @ParameterizedTest
+    void supports_composite_databases(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Dbms.compositeDatabases()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
         "false,community,3,5",
         "false,enterprise,3,5",
         "false,community,4,0",
@@ -114,6 +143,20 @@ class CanIUseTest {
                 Neo4j.builder(neo4j).environment(Neo4jEnvironment.AURA).build();
 
         assertThat(canIUse(Dbms.multiDatabase()).withNeo4j(neo4jAura)).isEqualTo(result);
+    }
+
+    @CsvSource({
+        "false,community,4,4",
+        "false,enterprise,4,4",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+    })
+    @ParameterizedTest
+    void supports_composite_databases_on_Aura(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        Neo4j neo4jAura =
+                Neo4j.builder(neo4j).environment(Neo4jEnvironment.AURA).build();
+
+        assertThat(canIUse(Dbms.compositeDatabases()).withNeo4j(neo4jAura)).isEqualTo(result);
     }
 
     @CsvSource({

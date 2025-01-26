@@ -18,4 +18,8 @@ public class Neo4jPredicate {
     public boolean withDetectedNeo4j(Driver driver) {
         return predicate.test(Neo4jDetector.detect(driver));
     }
+
+    public Neo4jPredicate and(Neo4jPredicate other) {
+        return new Neo4jPredicate(predicate.and(other.predicate));
+    }
 }
