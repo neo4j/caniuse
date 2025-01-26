@@ -18,6 +18,10 @@ public class Neo4j {
         return new Builder();
     }
 
+    public static Builder builder(Neo4j neo4j) {
+        return new Builder(neo4j);
+    }
+
     public Neo4jVersion version() {
         return version;
     }
@@ -51,6 +55,14 @@ public class Neo4j {
         private Neo4jVersion version;
         private Neo4jEdition edition;
         private Neo4jEnvironment environment;
+
+        Builder() {}
+
+        Builder(Neo4j neo4j) {
+            this.version = neo4j.version();
+            this.edition = neo4j.edition();
+            this.environment = neo4j.environment();
+        }
 
         public Builder version(Neo4jVersion version) {
             this.version = version;

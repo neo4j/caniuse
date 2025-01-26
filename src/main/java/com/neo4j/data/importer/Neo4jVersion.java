@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class Neo4jVersion implements Comparable<Neo4jVersion> {
 
+    static final Neo4jVersion V4_0_0 = new Neo4jVersion(4, 0, 0);
+    static final Neo4jVersion V4_1_3 = new Neo4jVersion(4, 1, 3);
     static final Neo4jVersion V5_0_0 = new Neo4jVersion(5, 0, 0);
     static final Neo4jVersion V5_7_0 = new Neo4jVersion(5, 7, 0);
     static final Neo4jVersion V5_18_0 = new Neo4jVersion(5, 18, 0);

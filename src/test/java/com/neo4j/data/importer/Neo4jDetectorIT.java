@@ -12,7 +12,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-class Neo4jDetectorTest {
+class Neo4jDetectorIT {
 
     @Container
     private static final Neo4jContainer<?> enterprise = new Neo4jContainer<>("neo4j:5-enterprise")

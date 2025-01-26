@@ -1,5 +1,7 @@
 package com.neo4j.data.importer;
 
+import static com.neo4j.data.importer.Neo4jVersion.V4_0_0;
+import static com.neo4j.data.importer.Neo4jVersion.V4_1_3;
 import static com.neo4j.data.importer.Neo4jVersion.V5_0_0;
 import static com.neo4j.data.importer.Neo4jVersion.V5_18_0;
 import static com.neo4j.data.importer.Neo4jVersion.V5_21_0;
@@ -23,5 +25,17 @@ public class Cypher {
 
     public static Neo4jPredicate concurrentCallInTransactions() {
         return new Neo4jPredicate((neo4j) -> neo4j.version().greaterThanOrEqual(V5_21_0));
+    }
+
+    public static Neo4jPredicate namedIndexes() {
+        return new Neo4jPredicate((neo4j) -> neo4j.version().greaterThanOrEqual(V4_0_0));
+    }
+
+    public static Neo4jPredicate dropIfExists() {
+        return createIfNotExists();
+    }
+
+    public static Neo4jPredicate createIfNotExists() {
+        return new Neo4jPredicate((neo4j) -> neo4j.version().greaterThanOrEqual(V4_1_3));
     }
 }

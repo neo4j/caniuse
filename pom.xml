@@ -133,6 +133,24 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IT.*</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <phase>integration-test</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
