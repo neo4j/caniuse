@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.neo4j.data.importer</groupId>
     <artifactId>neo4j-caniuse</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <java.version>8</java.version>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -77,7 +77,7 @@
                         <configuration>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>${java.version}</version>
+                                    <version>[8,9)</version>
                                 </requireJavaVersion>
                                 <dependencyConvergence/>
                             </rules>
@@ -88,11 +88,12 @@
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
-                <version>4.0.0</version>
+                <version>3.0.1</version>
+                <!-- ^ max for JDK 8 -->
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <keepBlankLines>false</keepBlankLines>
-                    <indentAttribute>schemaLocation</indentAttribute>
+                    <indentSchemaLocation>true</indentSchemaLocation>
                     <nrOfIndentSpace>4</nrOfIndentSpace>
                     <sortProperties>true</sortProperties>
                     <sortDependencies>scope,groupId,artifactId</sortDependencies>
@@ -114,7 +115,8 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>2.44.2</version>
+                <version>2.30.0</version>
+                <!-- ^ max for JDK 8 -->
                 <configuration>
                     <java>
                         <includes>
