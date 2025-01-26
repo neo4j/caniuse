@@ -141,4 +141,114 @@ class CanIUseTest {
     void supports_show_constraints(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
         assertThat(canIUse(Cypher.showConstraints()).withNeo4j(neo4j)).isEqualTo(result);
     }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,24",
+            "true,enterprise,5,24",
+    })
+    @ParameterizedTest
+    void supports_set_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.setDynamicLabels()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,24",
+            "true,enterprise,5,24",
+    })
+    @ParameterizedTest
+    void supports_remove_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.removeDynamicLabels()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,24",
+            "true,enterprise,5,24",
+    })
+    @ParameterizedTest
+    void supports_set_dynamic_property_keys(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.setDynamicPropertyKeys()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,24",
+            "true,enterprise,5,24",
+    })
+    @ParameterizedTest
+    void supports_remove_dynamic_property_keys(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.removeDynamicPropertyKeys()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,26",
+            "true,enterprise,5,26",
+    })
+    @ParameterizedTest
+    void supports_create_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.createDynamicLabels()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,26",
+            "true,enterprise,5,26",
+    })
+    @ParameterizedTest
+    void supports_match_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.matchDynamicLabels()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,26",
+            "true,enterprise,5,26",
+    })
+    @ParameterizedTest
+    void supports_merge_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.mergeDynamicLabels()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,26",
+            "true,enterprise,5,26",
+    })
+    @ParameterizedTest
+    void supports_create_dynamic_types(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.createDynamicTypes()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,26",
+            "true,enterprise,5,26",
+    })
+    @ParameterizedTest
+    void supports_match_dynamic_types(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.matchDynamicTypes()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+            "false,community,5,0",
+            "false,enterprise,5,0",
+            "true,community,5,26",
+            "true,enterprise,5,26",
+    })
+    @ParameterizedTest
+    void supports_merge_dynamic_types(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Cypher.mergeDynamicTypes()).withNeo4j(neo4j)).isEqualTo(result);
+    }
 }
