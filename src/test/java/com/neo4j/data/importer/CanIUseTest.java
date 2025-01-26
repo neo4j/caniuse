@@ -286,4 +286,15 @@ class CanIUseTest {
         assertThat(canIUse(Schema.propertyUnionTypeConstraints()).withNeo4j(neo4j))
                 .isEqualTo(result);
     }
+
+    @CsvSource({
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,13",
+        "true,enterprise,5,13",
+    })
+    @ParameterizedTest
+    void supports_vector_indexes(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Schema.vectorIndexes()).withNeo4j(neo4j)).isEqualTo(result);
+    }
 }
