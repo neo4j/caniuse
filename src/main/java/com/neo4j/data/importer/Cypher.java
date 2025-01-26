@@ -4,7 +4,6 @@ import static com.neo4j.data.importer.Neo4jVersion.V4_0_0;
 import static com.neo4j.data.importer.Neo4jVersion.V4_1_3;
 import static com.neo4j.data.importer.Neo4jVersion.V4_3_0;
 import static com.neo4j.data.importer.Neo4jVersion.V4_4_0;
-import static com.neo4j.data.importer.Neo4jVersion.V5_0_0;
 import static com.neo4j.data.importer.Neo4jVersion.V5_18_0;
 import static com.neo4j.data.importer.Neo4jVersion.V5_21_0;
 import static com.neo4j.data.importer.Neo4jVersion.V5_24_0;

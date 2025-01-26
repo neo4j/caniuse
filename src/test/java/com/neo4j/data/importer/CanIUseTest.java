@@ -117,12 +117,12 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,3,5",
-            "false,enterprise,3,5",
-            "false,community,4,0",
-            "false,enterprise,4,0",
-            "true,community,4,3",
-            "true,enterprise,4,3",
+        "false,community,3,5",
+        "false,enterprise,3,5",
+        "false,community,4,0",
+        "false,enterprise,4,0",
+        "true,community,4,3",
+        "true,enterprise,4,3",
     })
     @ParameterizedTest
     void supports_show_indexes(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -130,12 +130,12 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,3,5",
-            "false,enterprise,3,5",
-            "false,community,4,0",
-            "false,enterprise,4,0",
-            "true,community,4,3",
-            "true,enterprise,4,3",
+        "false,community,3,5",
+        "false,enterprise,3,5",
+        "false,community,4,0",
+        "false,enterprise,4,0",
+        "true,community,4,3",
+        "true,enterprise,4,3",
     })
     @ParameterizedTest
     void supports_show_constraints(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -143,10 +143,10 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,24",
-            "true,enterprise,5,24",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,24",
+        "true,enterprise,5,24",
     })
     @ParameterizedTest
     void supports_set_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -154,10 +154,10 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,24",
-            "true,enterprise,5,24",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,24",
+        "true,enterprise,5,24",
     })
     @ParameterizedTest
     void supports_remove_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -165,10 +165,10 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,24",
-            "true,enterprise,5,24",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,24",
+        "true,enterprise,5,24",
     })
     @ParameterizedTest
     void supports_set_dynamic_property_keys(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -176,10 +176,10 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,24",
-            "true,enterprise,5,24",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,24",
+        "true,enterprise,5,24",
     })
     @ParameterizedTest
     void supports_remove_dynamic_property_keys(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -187,10 +187,10 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,26",
-            "true,enterprise,5,26",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,26",
+        "true,enterprise,5,26",
     })
     @ParameterizedTest
     void supports_create_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -198,10 +198,10 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,26",
-            "true,enterprise,5,26",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,26",
+        "true,enterprise,5,26",
     })
     @ParameterizedTest
     void supports_match_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -209,10 +209,10 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,26",
-            "true,enterprise,5,26",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,26",
+        "true,enterprise,5,26",
     })
     @ParameterizedTest
     void supports_merge_dynamic_labels(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -220,10 +220,10 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,26",
-            "true,enterprise,5,26",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,26",
+        "true,enterprise,5,26",
     })
     @ParameterizedTest
     void supports_create_dynamic_types(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -231,10 +231,10 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,26",
-            "true,enterprise,5,26",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,26",
+        "true,enterprise,5,26",
     })
     @ParameterizedTest
     void supports_match_dynamic_types(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
@@ -242,13 +242,48 @@ class CanIUseTest {
     }
 
     @CsvSource({
-            "false,community,5,0",
-            "false,enterprise,5,0",
-            "true,community,5,26",
-            "true,enterprise,5,26",
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "true,community,5,26",
+        "true,enterprise,5,26",
     })
     @ParameterizedTest
     void supports_merge_dynamic_types(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
         assertThat(canIUse(Cypher.mergeDynamicTypes()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "false,community,5,9",
+        "true,enterprise,5,9",
+    })
+    @ParameterizedTest
+    void supports_property_type_constraints(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Schema.propertyTypeConstraints()).withNeo4j(neo4j)).isEqualTo(result);
+    }
+
+    @CsvSource({
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "false,community,5,10",
+        "true,enterprise,5,10",
+    })
+    @ParameterizedTest
+    void supports_property_list_type_constraints(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Schema.propertyListTypeConstraints()).withNeo4j(neo4j))
+                .isEqualTo(result);
+    }
+
+    @CsvSource({
+        "false,community,5,0",
+        "false,enterprise,5,0",
+        "false,community,5,11",
+        "true,enterprise,5,11",
+    })
+    @ParameterizedTest
+    void supports_property_union_type_constraints(boolean result, @AggregateWith(Neo4jAggregator.class) Neo4j neo4j) {
+        assertThat(canIUse(Schema.propertyUnionTypeConstraints()).withNeo4j(neo4j))
+                .isEqualTo(result);
     }
 }

@@ -10,6 +10,9 @@ public class Neo4jVersion implements Comparable<Neo4jVersion> {
     static final Neo4jVersion V4_4_0 = new Neo4jVersion(4, 4, 0);
     static final Neo4jVersion V5_0_0 = new Neo4jVersion(5, 0, 0);
     static final Neo4jVersion V5_7_0 = new Neo4jVersion(5, 7, 0);
+    static final Neo4jVersion V5_9_0 = new Neo4jVersion(5, 9, 0);
+    static final Neo4jVersion V5_10_0 = new Neo4jVersion(5, 10, 0);
+    static final Neo4jVersion V5_11_0 = new Neo4jVersion(5, 11, 0);
     static final Neo4jVersion V5_18_0 = new Neo4jVersion(5, 18, 0);
     static final Neo4jVersion V5_21_0 = new Neo4jVersion(5, 21, 0);
     static final Neo4jVersion V5_24_0 = new Neo4jVersion(5, 24, 0);
