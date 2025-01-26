@@ -6,11 +6,10 @@ import static com.neo4j.data.importer.Neo4jEnvironment.ON_PREMISE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Locale;
-import java.util.function.BiFunction;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-class CypherSupportTest {
+class CypherTest {
 
     @CsvSource({"community,4,4,false", "enterprise,4,4,false", "community,5,0,true", "enterprise,5,0,true"})
     @ParameterizedTest
@@ -19,11 +18,9 @@ class CypherSupportTest {
         int major = Integer.parseInt(rawMajor, 10);
         int minor = Integer.parseInt(rawMinor, 10);
         boolean result = Boolean.parseBoolean(expectedResult);
-        BiFunction<Integer, Integer, Neo4j> neo4j =
-                edition == COMMUNITY ? CypherSupportTest::neo4jCE : CypherSupportTest::neo4jEE;
+        Neo4j neo4j = edition == COMMUNITY ? neo4jCE(major, minor) : neo4jEE(major, minor);
 
-        assertThat(cypherSupports(neo4j.apply(major, minor)).callInTransactions())
-                .isEqualTo(result);
+        assertThat(Cypher.callInTransactions().withNeo4j(neo4j)).isEqualTo(result);
     }
 
     @CsvSource({
@@ -41,10 +38,9 @@ class CypherSupportTest {
         int major = Integer.parseInt(rawMajor, 10);
         int minor = Integer.parseInt(rawMinor, 10);
         boolean result = Boolean.parseBoolean(expectedResult);
-        BiFunction<Integer, Integer, Neo4j> neo4j =
-                edition == COMMUNITY ? CypherSupportTest::neo4jCE : CypherSupportTest::neo4jEE;
+        Neo4j neo4j = edition == COMMUNITY ? neo4jCE(major, minor) : neo4jEE(major, minor);
 
-        assertThat(cypherSupports(neo4j.apply(major, minor)).callInTransactionsWithCustomErrorPolicy())
+        assertThat(Cypher.callInTransactionsWithCustomErrorPolicy().withNeo4j(neo4j))
                 .isEqualTo(result);
     }
 
@@ -63,10 +59,9 @@ class CypherSupportTest {
         int major = Integer.parseInt(rawMajor, 10);
         int minor = Integer.parseInt(rawMinor, 10);
         boolean result = Boolean.parseBoolean(expectedResult);
-        BiFunction<Integer, Integer, Neo4j> neo4j =
-                edition == COMMUNITY ? CypherSupportTest::neo4jCE : CypherSupportTest::neo4jEE;
+        Neo4j neo4j = edition == COMMUNITY ? neo4jCE(major, minor) : neo4jEE(major, minor);
 
-        assertThat(cypherSupports(neo4j.apply(major, minor)).callInTransactionsWithCompositeDatabases())
+        assertThat(Cypher.callInTransactionsWithCompositeDatabases().withNeo4j(neo4j))
                 .isEqualTo(result);
     }
 
@@ -85,15 +80,9 @@ class CypherSupportTest {
         int major = Integer.parseInt(rawMajor, 10);
         int minor = Integer.parseInt(rawMinor, 10);
         boolean result = Boolean.parseBoolean(expectedResult);
-        BiFunction<Integer, Integer, Neo4j> neo4j =
-                edition == COMMUNITY ? CypherSupportTest::neo4jCE : CypherSupportTest::neo4jEE;
+        Neo4j neo4j = edition == COMMUNITY ? neo4jCE(major, minor) : neo4jEE(major, minor);
 
-        assertThat(cypherSupports(neo4j.apply(major, minor)).concurrentCallInTransactions())
-                .isEqualTo(result);
-    }
-
-    private static CypherSupport cypherSupports(Neo4j neo4j) {
-        return new CypherSupport(neo4j);
+        assertThat(Cypher.concurrentCallInTransactions().withNeo4j(neo4j)).isEqualTo(result);
     }
 
     private static Neo4j neo4jCE(int major, int minor) {

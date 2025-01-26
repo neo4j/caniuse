@@ -1,0 +1,27 @@
+package com.neo4j.data.importer;
+
+import static com.neo4j.data.importer.Neo4jVersion.V5_0_0;
+import static com.neo4j.data.importer.Neo4jVersion.V5_18_0;
+import static com.neo4j.data.importer.Neo4jVersion.V5_21_0;
+import static com.neo4j.data.importer.Neo4jVersion.V5_7_0;
+
+public class Cypher {
+
+    private Cypher() {}
+
+    public static Neo4jPredicate callInTransactions() {
+        return new Neo4jPredicate((neo4j) -> neo4j.version().greaterThanOrEqual(V5_0_0));
+    }
+
+    public static Neo4jPredicate callInTransactionsWithCustomErrorPolicy() {
+        return new Neo4jPredicate((neo4j) -> neo4j.version().greaterThanOrEqual(V5_7_0));
+    }
+
+    public static Neo4jPredicate callInTransactionsWithCompositeDatabases() {
+        return new Neo4jPredicate((neo4j) -> neo4j.version().greaterThanOrEqual(V5_18_0));
+    }
+
+    public static Neo4jPredicate concurrentCallInTransactions() {
+        return new Neo4jPredicate((neo4j) -> neo4j.version().greaterThanOrEqual(V5_21_0));
+    }
+}
