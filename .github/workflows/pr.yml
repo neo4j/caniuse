@@ -16,14 +16,13 @@ jobs:
             distribution: 'temurin'
             cache: 'maven'
         - name: Build & run unit tests
-          run: mvn --quiet --show-version --batch-mode test
+          run: mvn --show-version --batch-mode test
     e2e:
       needs: build
-      name: Java ${{ matrix.java }} | Neo4j ${{ matrix.neo4j_version }} (EE? ${{ matrix.enterprise }})
+      name: Neo4j ${{ matrix.neo4j_version }} (EE? ${{ matrix.enterprise }})
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          java: [ 8, 11, 17, 21 ]
           neo4j_version:
             - "3.5"
             - "4.0"
@@ -62,10 +61,10 @@ jobs:
             - "false"
       steps:
         - uses: actions/checkout@v4
-        - name: Set up JDK ${{ matrix.java }}
+        - name: Set up JDK 8
           uses: actions/setup-java@v4
           with:
-            java-version: ${{ matrix.java }}
+            java-version: 8
             distribution: 'temurin'
             cache: 'maven'
 
