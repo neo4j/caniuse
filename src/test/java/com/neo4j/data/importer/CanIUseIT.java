@@ -160,7 +160,7 @@ public class CanIUseIT {
     @Test
     void supports_multi_databases() {
         // composite databases is implicitly tested in the test setup
-        verify(Dbms.multiDatabase(), "CREATE OR REPLACE DATABASE foobar");
+        verify(Dbms.multiDatabase(), "CREATE OR REPLACE DATABASE foobar", SessionConfig.forDatabase("system"));
     }
 
     @Test
@@ -183,9 +183,13 @@ public class CanIUseIT {
     }
 
     private void verify(Neo4jPredicate check, String query) {
+        verify(check, query, SessionConfig.forDatabase("neo4j"));
+    }
+
+    private void verify(Neo4jPredicate check, String query, SessionConfig config) {
         assertThatCode(() -> {
                     if (canIUse(check).withDetectedNeo4j(driver)) {
-                        try (Session session = driver.session(SessionConfig.forDatabase("neo4j"))) {
+                        try (Session session = driver.session(config)) {
                             session.run(query).consume();
                         }
                     }
