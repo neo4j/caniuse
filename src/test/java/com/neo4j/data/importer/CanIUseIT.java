@@ -165,21 +165,21 @@ public class CanIUseIT {
 
     @Test
     void supports_property_type_constraint() {
-        verify(Schema.propertyTypeConstraints(), "CREATE CONSTRAINT c FOR (c:Foobar) REQUIRE c.baz IS :: STRING");
+        verify(Schema.propertyTypeConstraints(), "CREATE CONSTRAINT c1 FOR (c:Foobar) REQUIRE c.baz IS :: STRING");
     }
 
     @Test
     void supports_property_list_type_constraint() {
         verify(
                 Schema.propertyListTypeConstraints(),
-                "CREATE CONSTRAINT c FOR (c:Foobar) REQUIRE c.qix IS :: LIST<BOOLEAN NOT NULL>");
+                "CREATE CONSTRAINT c2 FOR (c:Foobar) REQUIRE c.qix IS :: LIST<BOOLEAN NOT NULL>");
     }
 
     @Test
     void supports_property_union_type_constraint() {
         verify(
                 Schema.propertyUnionTypeConstraints(),
-                "CREATE CONSTRAINT c FOR (c:Foobar) REQUIRE c.mux IS :: INTEGER | FLOAT | STRING");
+                "CREATE CONSTRAINT c3 FOR (c:Foobar) REQUIRE c.mux IS :: INTEGER | FLOAT | STRING");
     }
 
     private void verify(Neo4jPredicate check, String query) {
