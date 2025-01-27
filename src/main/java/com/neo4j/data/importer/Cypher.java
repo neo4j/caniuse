@@ -23,7 +23,8 @@ public class Cypher {
     }
 
     public static Neo4jPredicate callInTransactionsWithCompositeDatabases() {
-        return new Neo4jPredicate((neo4j) -> neo4j.version().greaterThanOrEqual(V5_18_0));
+        return Dbms.compositeDatabases()
+                .and(new Neo4jPredicate((neo4j) -> neo4j.version().greaterThanOrEqual(V5_18_0)));
     }
 
     public static Neo4jPredicate concurrentCallInTransactions() {
