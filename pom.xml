@@ -106,7 +106,7 @@
                         </goals>
                         <phase>validate</phase>
                         <configuration>
-                            <verifyFail>STOP</verifyFail>
+                            <verifyFail>stop</verifyFail>
                         </configuration>
                     </execution>
                 </executions>
