@@ -68,7 +68,8 @@ public class CanIUseIT {
                         + "  MATCH (n) "
                         + "  WHERE elementId(n) = id "
                         + "  DETACH DELETE n "
-                        + "} IN TRANSACTIONS");
+                        + "} IN TRANSACTIONS",
+                SessionConfig.forDatabase("inventory"));
     }
 
     @Test
