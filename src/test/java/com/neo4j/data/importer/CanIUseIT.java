@@ -85,12 +85,12 @@ public class CanIUseIT {
 
     @Test
     void supports_drop_if_exists() {
-        verify(Cypher.namedIndexes(), "DROP INDEX another_name IF EXISTS");
+        verify(Cypher.dropIfExists(), "DROP INDEX another_name IF EXISTS");
     }
 
     @Test
     void supports_create_if_not_exists() {
-        verify(Cypher.namedIndexes(), "CREATE INDEX a_name IF NOT EXISTS FOR (n:Node) ON (n.prop)");
+        verify(Cypher.createIfNotExists(), "CREATE INDEX a_name IF NOT EXISTS FOR (n:Node) ON (n.prop)");
     }
 
     @Test
