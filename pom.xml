@@ -49,7 +49,7 @@
         </dependency>
     </dependencies>
     <build>
-        <defaultGoal>sortpom:sort spotless:apply verify</defaultGoal>
+        <defaultGoal>validate sortpom:sort spotless:apply verify</defaultGoal>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
