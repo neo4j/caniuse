@@ -8,14 +8,13 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
-import org.neo4j.driver.SessionConfig;
 
 class Neo4jDetector {
 
     private Neo4jDetector() {}
 
     public static Neo4j detect(Driver driver) {
-        try (Session session = driver.session(SessionConfig.forDatabase("neo4j"))) {
+        try (Session session = driver.session()) {
             Map<String, Object> params = new HashMap<>(1);
             params.put("name", "Neo4j Kernel");
             Result result = session.run(
