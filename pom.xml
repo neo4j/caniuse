@@ -88,7 +88,7 @@
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>4.0.0</version>
                 <!-- ^ max for JDK 8 -->
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
