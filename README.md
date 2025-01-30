@@ -6,12 +6,12 @@ Simple Neo4j Feature Detection Library for Neo4j clients.
 
 ### Build
 
- - JDK 8+
+ - JDK 11
  - Recent Maven (3+)
 
 ### Run
 
- - JRE 8+
+ - JRE 11+
 
 ## Quick Start
 
