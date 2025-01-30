@@ -6,7 +6,9 @@ data class Neo4j(
     val version: Neo4jVersion,
     val edition: Neo4jEdition,
     val environment: Neo4jEnvironment,
-)
+) {
+  companion object {}
+}
 
 data class Neo4jVersion(
     val major: Int,

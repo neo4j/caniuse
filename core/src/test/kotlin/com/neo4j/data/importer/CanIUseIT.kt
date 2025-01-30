@@ -188,7 +188,7 @@ class CanIUseIT {
       config: SessionConfig = SessionConfig.forDatabase("neo4j")
   ) {
     assertThatCode {
-          if (canIUse(check).withNeo4j(Neo4jDetector.detectWith(driver))) {
+          if (canIUse(check).withNeo4j(Neo4j.detectedWith(driver))) {
             driver.session(config).use { session -> session.run(query).consume() }
           }
         }
@@ -209,7 +209,7 @@ class CanIUseIT {
     fun beforeAll() {
       driver = GraphDatabase.driver(neo4j.boltUrl, AuthTokens.basic("neo4j", "letmein!"))
       driver.verifyConnectivity()
-      if (canIUse(compositeDatabases()).withNeo4j(Neo4jDetector.detectWith(driver))) {
+      if (canIUse(compositeDatabases()).withNeo4j(Neo4j.detectedWith(driver))) {
         driver.session(SessionConfig.forDatabase("system")).use { session ->
           session.run("CREATE OR REPLACE COMPOSITE DATABASE inventory")
         }

@@ -3,7 +3,6 @@ package com.neo4j.data.importer
 import com.neo4j.data.importer.DockerNeo4j.enterprise
 import com.neo4j.data.importer.DockerNeo4j.image
 import com.neo4j.data.importer.DockerNeo4j.version
-import com.neo4j.data.importer.Neo4jDetector.detectWith
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.neo4j.driver.AuthTokens
@@ -17,7 +16,7 @@ internal class Neo4jDetectorIT {
   @Test
   fun detects_neo4j_instance() {
     GraphDatabase.driver(neo4j.boltUrl, AuthTokens.basic("neo4j", "letmein!")).use { driver ->
-      val neo4j: Neo4j = detectWith(driver)
+      val neo4j = Neo4j.detectedWith(driver)
       assertThat(neo4j.edition)
           .isEqualTo(if (enterprise()) Neo4jEdition.ENTERPRISE else Neo4jEdition.COMMUNITY)
       // we cannot match more than the major since "5" is a valid tag
