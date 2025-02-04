@@ -5,7 +5,7 @@ import kotlin.math.sign
 data class Neo4j(
     val version: Neo4jVersion,
     val edition: Neo4jEdition,
-    val environment: Neo4jDeploymentType,
+    val deploymentType: Neo4jDeploymentType,
 ) {
   companion object {}
 }
