@@ -86,7 +86,7 @@ internal class CanIUseTest {
       result: Boolean,
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
   ) {
-    val neo4jAura: Neo4j = neo4j.copy(environment = Neo4jEnvironment.AURA)
+    val neo4jAura: Neo4j = neo4j.copy(environment = Neo4jDeploymentType.AURA)
 
     assertThat(canIUse(callInTransactionsWithCompositeDatabases()).withNeo4j(neo4jAura))
         .isEqualTo(result)
@@ -171,7 +171,7 @@ internal class CanIUseTest {
       result: Boolean,
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
   ) {
-    val neo4jAura: Neo4j = neo4j.copy(environment = Neo4jEnvironment.AURA)
+    val neo4jAura: Neo4j = neo4j.copy(environment = Neo4jDeploymentType.AURA)
 
     assertThat(canIUse(multiDatabase()).withNeo4j(neo4jAura)).isEqualTo(result)
   }
@@ -183,7 +183,7 @@ internal class CanIUseTest {
       result: Boolean,
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
   ) {
-    val neo4jAura: Neo4j = neo4j.copy(environment = Neo4jEnvironment.AURA)
+    val neo4jAura: Neo4j = neo4j.copy(environment = Neo4jDeploymentType.AURA)
 
     assertThat(canIUse(compositeDatabases()).withNeo4j(neo4jAura)).isEqualTo(result)
   }

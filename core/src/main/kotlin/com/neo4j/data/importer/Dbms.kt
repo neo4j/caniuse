@@ -9,7 +9,7 @@ object Dbms {
     return Neo4jPredicate {
       it.edition === Neo4jEdition.ENTERPRISE &&
           it.version >= V4_0_0 &&
-          it.environment !== Neo4jEnvironment.AURA
+          it.environment !== Neo4jDeploymentType.AURA
     }
   }
 
@@ -17,7 +17,7 @@ object Dbms {
     return Neo4jPredicate {
       it.edition === Neo4jEdition.ENTERPRISE &&
           it.version >= V5_0_0 &&
-          it.environment !== Neo4jEnvironment.AURA
+          it.environment !== Neo4jDeploymentType.AURA
     }
   }
 }
