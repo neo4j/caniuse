@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.neo4j.data.importer</groupId>
     <artifactId>neo4j-caniuse-parent</artifactId>
@@ -12,8 +12,10 @@
         <module>core</module>
     </modules>
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>11</java.version>
+        <kotlin.version>2.1.20-Beta2</kotlin.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <testcontainers.version>1.20.4</testcontainers.version>
     </properties>
@@ -33,6 +35,11 @@
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>3.27.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>${kotlin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -65,15 +72,15 @@
         <defaultGoal>validate sortpom:sort spotless:apply verify</defaultGoal>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <proc>none</proc>
-                    <showWarnings>true</showWarnings>
-                    <compilerArgs>
-                        <arg>-Xlint:all</arg>
-                        <arg>-Werror</arg>
-                    </compilerArgs>
+                    <args>
+                        <!-- disabled because of https://youtrack.jetbrains.com/issue/KT-62654/kapt-maven-plugin-1.9.0-outputs-duplicate-source-root-warnings -->
+                        <!--                        <arg>-Werror</arg>-->
+                    </args>
                 </configuration>
             </plugin>
             <plugin>
@@ -90,7 +97,7 @@
                         <configuration>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>[8,9)</version>
+                                    <version>[${java.version}, 12)</version>
                                 </requireJavaVersion>
                                 <dependencyConvergence/>
                             </rules>
@@ -101,12 +108,11 @@
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
-                <version>3.0.1</version>
-                <!-- ^ max for JDK 8 -->
+                <version>4.0.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <keepBlankLines>false</keepBlankLines>
-                    <indentSchemaLocation>true</indentSchemaLocation>
+                    <indentAttribute>schemaLocation</indentAttribute>
                     <nrOfIndentSpace>4</nrOfIndentSpace>
                     <sortProperties>true</sortProperties>
                     <sortDependencies>scope,groupId,artifactId</sortDependencies>
@@ -128,16 +134,23 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>2.30.0</version>
-                <!-- ^ max for JDK 8 -->
+                <version>2.44.2</version>
                 <configuration>
-                    <java>
+                    <kotlin>
                         <includes>
-                            <include>src/main/java/**/*.java</include>
-                            <include>src/test/java/**/*.java</include>
+                            <include>src/main/kotlin/**/*.kt</include>
+                            <include>src/test/kotlin/**/*.kt</include>
                         </includes>
-                        <palantirJavaFormat/>
-                    </java>
+                        <ktfmt>
+                            <version>0.46</version>
+                            <style>DEFAULT</style>
+                            <blockIndent>4</blockIndent>
+                            <continuationIndent>4</continuationIndent>
+                            <removeUnusedImports>true</removeUnusedImports>
+                            <maxWidth>120</maxWidth>
+                        </ktfmt>
+                        <toggleOffOn/>
+                    </kotlin>
                 </configuration>
                 <executions>
                     <execution>
@@ -167,5 +180,7 @@
                 </executions>
             </plugin>
         </plugins>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     </build>
 </project>
