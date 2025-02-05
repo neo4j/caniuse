@@ -21,7 +21,7 @@ internal class Neo4jDetectorIT {
           .isEqualTo(if (enterprise()) Neo4jEdition.ENTERPRISE else Neo4jEdition.COMMUNITY)
       // we cannot match more than the major since "5" is a valid tag
       assertThat(neo4j.version.major).isEqualTo(majorOf(version()))
-      assertThat(neo4j.environment).isGreaterThanOrEqualTo(Neo4jEnvironment.ON_PREMISE)
+      assertThat(neo4j.deploymentType).isGreaterThanOrEqualTo(Neo4jDeploymentType.SELF_MANAGED)
     }
   }
 

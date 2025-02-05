@@ -31,11 +31,11 @@ class Neo4jAggregator : ArgumentsAggregator {
     }
 
     private fun neo4jCE(version: Neo4jVersion): Neo4j {
-      return Neo4j(version, Neo4jEdition.COMMUNITY, Neo4jEnvironment.ON_PREMISE)
+      return Neo4j(version, Neo4jEdition.COMMUNITY, Neo4jDeploymentType.SELF_MANAGED)
     }
 
     private fun neo4jEE(version: Neo4jVersion): Neo4j {
-      return Neo4j(version, Neo4jEdition.ENTERPRISE, Neo4jEnvironment.ON_PREMISE)
+      return Neo4j(version, Neo4jEdition.ENTERPRISE, Neo4jDeploymentType.SELF_MANAGED)
     }
   }
 }

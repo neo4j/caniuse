@@ -22,11 +22,11 @@ import com.neo4j.data.importer.CanIUse.canIUse
 import com.neo4j.data.importer.Cypher
 import com.neo4j.data.importer.Neo4j
 import com.neo4j.data.importer.Neo4jEdition.ENTERPRISE
-import com.neo4j.data.importer.Neo4jEnvironment.ON_PREMISE
+import com.neo4j.data.importer.Neo4jDeploymentType.SELF_MANAGED
 import com.neo4j.data.importer.Neo4jVersion
 
 fun main(args: Array<String>) {
-    val neo4j = Neo4j(Neo4jVersion(5, 26), ENTERPRISE, ON_PREMISE)
+    val neo4j = Neo4j(Neo4jVersion(5, 26), ENTERPRISE, SELF_MANAGED)
     if (canIUse(Cypher.concurrentCallInTransactions()).withNeo4j(neo4j)) {
         // run concurrent CALL IN TRANSACTIONS \o/
     }

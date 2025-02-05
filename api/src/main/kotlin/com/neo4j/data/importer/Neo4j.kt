@@ -5,7 +5,7 @@ import kotlin.math.sign
 data class Neo4j(
     val version: Neo4jVersion,
     val edition: Neo4jEdition,
-    val environment: Neo4jEnvironment,
+    val deploymentType: Neo4jDeploymentType,
 ) {
   companion object {}
 }
@@ -32,7 +32,7 @@ enum class Neo4jEdition {
   ENTERPRISE
 }
 
-enum class Neo4jEnvironment {
-  ON_PREMISE,
+enum class Neo4jDeploymentType {
+  SELF_MANAGED,
   AURA
 }

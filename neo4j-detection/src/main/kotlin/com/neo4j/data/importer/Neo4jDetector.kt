@@ -20,11 +20,11 @@ fun Neo4j.Companion.detectedWith(driver: Driver): Neo4j {
   }
 }
 
-private fun parseDeploymentType(rawVersion: String): Neo4jEnvironment {
+private fun parseDeploymentType(rawVersion: String): Neo4jDeploymentType {
   if (rawVersion.endsWith("-aura")) {
-    return Neo4jEnvironment.AURA
+    return Neo4jDeploymentType.AURA
   }
-  return Neo4jEnvironment.ON_PREMISE
+  return Neo4jDeploymentType.SELF_MANAGED
 }
 
 private fun parseEdition(rawEdition: String): Neo4jEdition {
