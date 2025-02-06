@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+./mvnw sortpom:sort spotless:apply license:format
+git update-index --again
