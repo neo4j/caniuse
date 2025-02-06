@@ -25,6 +25,10 @@ data class Neo4jVersion(
     }
     return (patch - other.patch).sign
   }
+
+  companion object {
+    val LATEST = Neo4jVersion(Int.MAX_VALUE, 0, 0)
+  }
 }
 
 enum class Neo4jEdition {
