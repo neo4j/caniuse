@@ -13,6 +13,8 @@ import org.neo4j.caniuse.Cypher.createDynamicLabels
 import org.neo4j.caniuse.Cypher.createDynamicTypes
 import org.neo4j.caniuse.Cypher.createIfNotExists
 import org.neo4j.caniuse.Cypher.dropIfExists
+import org.neo4j.caniuse.Cypher.explicitCypher5Selection
+import org.neo4j.caniuse.Cypher.explicitCypherSelection
 import org.neo4j.caniuse.Cypher.matchDynamicTypes
 import org.neo4j.caniuse.Cypher.mergeDynamicTypes
 import org.neo4j.caniuse.Cypher.namedIndexes
@@ -180,6 +182,16 @@ class CanIUseIT {
     verify(
         propertyUnionTypeConstraints(),
         "CREATE CONSTRAINT c3 FOR (c:Foobar) REQUIRE c.mux IS :: INTEGER | FLOAT | STRING")
+  }
+
+  @Test
+  fun supports_cypher_explicit_version_selection() {
+    verify(explicitCypherSelection(), "CYPHER 5 RETURN 42")
+  }
+
+  @Test
+  fun supports_cypher_explicit_version_5_selection() {
+    verify(explicitCypher5Selection(), "CYPHER 5 RETURN 42")
   }
 
   private fun verify(

@@ -87,4 +87,12 @@ object Cypher {
   fun mergeDynamicTypes(): Neo4jPredicate {
     return Neo4jPredicate { it.version >= V5_26_0 }
   }
+
+  fun explicitCypher5Selection(): Neo4jPredicate {
+    return explicitCypherSelection()
+  }
+
+  fun explicitCypherSelection(): Neo4jPredicate {
+    return Neo4jPredicate { it.version >= V5_26_0 }
+  }
 }
