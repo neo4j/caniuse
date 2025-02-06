@@ -19,10 +19,22 @@ internal class Neo4jDetectorIT {
       val neo4j = Neo4j.detectedWith(driver)
       assertThat(neo4j.edition)
           .isEqualTo(if (enterprise()) Neo4jEdition.ENTERPRISE else Neo4jEdition.COMMUNITY)
-      // we cannot match more than the major since "5" is a valid tag
-      assertThat(neo4j.version.major).isEqualTo(majorOf(version()))
-      assertThat(neo4j.deploymentType).isGreaterThanOrEqualTo(Neo4jDeploymentType.SELF_MANAGED)
+      val version = version()
+      // ignore calver versions for now, since they expose a "fake" semver version
+      if (!followsCalver(version)) {
+        // we cannot match more than the major since "5" is a valid tag
+        assertThat(neo4j.version.major).isEqualTo(majorOf(version))
+      }
+      assertThat(neo4j.deploymentType).isEqualTo(Neo4jDeploymentType.SELF_MANAGED)
     }
+  }
+
+  private fun followsCalver(version: String): Boolean {
+    val dot = version.indexOf('.')
+    if (dot == -1) {
+      return version.length == 4
+    }
+    return version.substring(0, dot).length == 4
   }
 
   private fun majorOf(version: String): Int {
