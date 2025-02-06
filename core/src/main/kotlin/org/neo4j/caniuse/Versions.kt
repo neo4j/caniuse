@@ -1,6 +1,6 @@
 package org.neo4j.caniuse
 
-object Versions {
+internal object Versions {
 
   internal val V4_0_0 = Neo4jVersion(4, 0, 0)
 
