@@ -13,6 +13,8 @@ import org.neo4j.caniuse.Cypher.createDynamicLabels
 import org.neo4j.caniuse.Cypher.createDynamicTypes
 import org.neo4j.caniuse.Cypher.createIfNotExists
 import org.neo4j.caniuse.Cypher.dropIfExists
+import org.neo4j.caniuse.Cypher.explicitCypher5Selection
+import org.neo4j.caniuse.Cypher.explicitCypherSelection
 import org.neo4j.caniuse.Cypher.matchDynamicLabels
 import org.neo4j.caniuse.Cypher.matchDynamicTypes
 import org.neo4j.caniuse.Cypher.mergeDynamicLabels
@@ -353,5 +355,35 @@ internal class CanIUseTest {
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
   ) {
     assertThat(canIUse(vectorIndexes()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,5,0",
+      "false,enterprise,5,0",
+      "true,community,5,26",
+      "true,enterprise,5,26",
+      "true,community,2025,1",
+      "true,enterprise,2025,1")
+  @ParameterizedTest
+  fun supports_cypher_explicit_version_selection(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(explicitCypherSelection()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,5,0",
+      "false,enterprise,5,0",
+      "true,community,5,26",
+      "true,enterprise,5,26",
+      "true,community,2025,1",
+      "true,enterprise,2025,1")
+  @ParameterizedTest
+  fun supports_cypher_version_5_selection(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(explicitCypher5Selection()).withNeo4j(neo4j)).isEqualTo(result)
   }
 }
