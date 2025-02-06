@@ -1,5 +1,7 @@
 # Neo4j: Can I Use <X>?
 
+**This is an INTERNAL library designed to be used within official Neo4j products. No guarantees are made regarding its API stability and support.**
+
 Simple Neo4j Feature Detection Library for Neo4j clients.
 
 ## Prerequisites

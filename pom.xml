@@ -2,18 +2,47 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.neo4j.data.importer</groupId>
+    <groupId>org.neo4j</groupId>
     <artifactId>neo4j-caniuse-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>caniuse</name>
+    <description>Feature Detection Library for Neo4j</description>
+    <url>https://github.com/neo4j/neo4j-caniuse</url>
+    <organization>
+        <name>Neo4j, Neo4j Sweden AB</name>
+        <url>https://neo4j.com</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>team-connectors</id>
+            <name>Connectors Team</name>
+            <organization>Neo4j</organization>
+            <organizationUrl>https://neo4j.com</organizationUrl>
+        </developer>
+    </developers>
     <modules>
         <module>api</module>
         <module>neo4j-detection</module>
         <module>core</module>
     </modules>
+    <scm>
+        <connection>scm:git:git://github.com/neo4j/caniuse.git</connection>
+        <developerConnection>scm:git:git@github.com:neo4j/caniuse.git</developerConnection>
+        <url>https://github.com/neo4j/caniuse</url>
+    </scm>
     <properties>
         <java.version>11</java.version>
+        <jreleaser-maven-plugin.version>1.16.0</jreleaser-maven-plugin.version>
         <kotlin.version>2.1.20-Beta2</kotlin.version>
+        <license.id>neo4j_apache_v2</license.id>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -69,7 +98,7 @@
         </dependencies>
     </dependencyManagement>
     <build>
-        <defaultGoal>validate sortpom:sort spotless:apply verify</defaultGoal>
+        <defaultGoal>validate sortpom:sort spotless:apply license:format verify</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -96,8 +125,11 @@
                         <phase>validate</phase>
                         <configuration>
                             <rules>
+                                <requireMavenVersion>
+                                    <version>[3.6.3,)</version>
+                                </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>[${java.version}, 12)</version>
+                                    <version>[${java.version},)</version>
                                 </requireJavaVersion>
                                 <dependencyConvergence/>
                             </rules>
@@ -179,8 +211,99 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>4.6</version>
+                <configuration>
+                    <strictCheck>true</strictCheck>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>/license/${license.id}/header.txt</header>
+                            <includes>
+                                <include>src/**/*.java</include>
+                            </includes>
+                        </licenseSet>
+                    </licenseSets>
+                    <mapping>
+                        <kotlin>SLASHSTAR_STYLE</kotlin>
+                    </mapping>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.neo4j.build</groupId>
+                        <artifactId>resources</artifactId>
+                        <version>2024-12.1</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>check-licenses</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     </build>
+    <profiles>
+        <profile>
+            <id>publication</id>
+            <properties>
+                <altDeploymentRepository>local::file:./target/staging-deploy</altDeploymentRepository>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.11.2</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <attach>true</attach>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <attach>true</attach>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jreleaser</groupId>
+                        <artifactId>jreleaser-maven-plugin</artifactId>
+                        <version>${jreleaser-maven-plugin.version}</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
