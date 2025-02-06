@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.neo4j</groupId>
-        <artifactId>neo4j-caniuse-parent</artifactId>
+        <artifactId>caniuse-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>neo4j-caniuse-api</artifactId>
+    <artifactId>caniuse-api</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

@@ -17,15 +17,15 @@ Simple Neo4j Feature Detection Library for Neo4j clients.
 
 ## Quick Start
 
-Add `com.neo4j.data.importer:neo4j-caniuse-core` to your project.
+Add `org.neo4j:caniuse-core` to your project.
 
 ```kotlin
-import com.neo4j.data.importer.CanIUse.canIUse
-import com.neo4j.data.importer.Cypher
-import com.neo4j.data.importer.Neo4j
-import com.neo4j.data.importer.Neo4jEdition.ENTERPRISE
-import com.neo4j.data.importer.Neo4jDeploymentType.SELF_MANAGED
-import com.neo4j.data.importer.Neo4jVersion
+import org.neo4j.caniuse.CanIUse.canIUse
+import org.neo4j.caniuse.Cypher
+import org.neo4j.caniuse.Neo4j
+import org.neo4j.caniuse.Neo4jEdition.ENTERPRISE
+import org.neo4j.caniuse.Neo4jDeploymentType.SELF_MANAGED
+import org.neo4j.caniuse.Neo4jVersion
 
 fun main(args: Array<String>) {
     val neo4j = Neo4j(Neo4jVersion(5, 26), ENTERPRISE, SELF_MANAGED)
@@ -40,16 +40,16 @@ You can find other feature detections in `Cypher`, as well as `Dbms` and `Schema
 
 ## Neo4j detection
 
-`neo4j-caniuse-core` only allows static definitions of your target Neo4j server's characteristics.
+`org.neo4j:caniuse-core` only allows static definitions of your target Neo4j server's characteristics.
 
-You can automatically retrieve these pieces of information by adding `com.neo4j.data.importer:neo4j-caniuse-detection` alongside `neo4j-caniuse-core` to your project.
+You can automatically retrieve these pieces of information by adding `org.neo4j:caniuse-neo4j-detection` alongside `caniuse-core` to your project.
 
 The previous sample then becomes:
 
 ```kotlin
-import com.neo4j.data.importer.CanIUse.canIUse
-import com.neo4j.data.importer.Cypher
-import com.neo4j.data.importer.Neo4jDetector
+import org.neo4j.caniuse.CanIUse.canIUse
+import org.neo4j.caniuse.Cypher
+import org.neo4j.caniuse.Neo4jDetector
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.GraphDatabase
 
