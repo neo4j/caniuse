@@ -13,25 +13,41 @@ internal object Neo4jVersionParser {
         continue
       }
       if (major == -1) {
-        major = buffer.toInt(10)
+        try {
+          major = buffer.toInt(10)
+        } catch (_: NumberFormatException) {
+          return Neo4jVersion.LATEST
+        }
       } else if (minor == -1) {
-        minor = parseMinor(buffer)
+        try {
+          minor = parseMinor(buffer)
+        } catch (_: NumberFormatException) {
+          return Neo4jVersion.LATEST
+        }
       } else {
-        throw invalidVersion(version)
+        return Neo4jVersion.LATEST
       }
       buffer = ""
     }
     if (buffer.isEmpty()) {
-      throw invalidVersion(version)
+      return Neo4jVersion.LATEST
     }
     if (minor == -1) {
-      minor = parseMinor(buffer)
+      try {
+        minor = parseMinor(buffer)
+      } catch (_: NumberFormatException) {
+        return Neo4jVersion.LATEST
+      }
     } else {
-      patch = parsePatch(buffer)
+      try {
+        patch = parsePatch(buffer)
+      } catch (_: NumberFormatException) {
+        return Neo4jVersion.LATEST
+      }
     }
 
     if (major == -1 || minor == -1) {
-      throw invalidVersion(version)
+      return Neo4jVersion.LATEST
     }
     if (patch == -1) {
       return Neo4jVersion(major, minor)
@@ -51,9 +67,5 @@ internal object Neo4jVersionParser {
     }
     patch = buffer.substring(0, end).toInt(10)
     return patch
-  }
-
-  private fun invalidVersion(version: String): IllegalArgumentException {
-    return IllegalArgumentException(String.format("Invalid Neo4j kernel version: %s", version))
   }
 }
