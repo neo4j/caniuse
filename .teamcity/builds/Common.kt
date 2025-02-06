@@ -16,10 +16,6 @@ const val MAVEN_DEFAULT_ARGS = "--no-transfer-progress --batch-mode --show-versi
 const val DEFAULT_JAVA_VERSION = "11"
 
 val NEO4J_VERSIONS = listOf<String>(
-    "3.5",
-    "4.1",
-    "4.2",
-    "4.3",
     "4.4",
     "5.1",
     "5.2",
