@@ -60,7 +60,7 @@ class Release(id: String, name: String) :
 
         runMaven(DEFAULT_JAVA_VERSION) {
           this.name = "Release to Github"
-          goals = "jreleaser:auto-config-release"
+          goals = "jreleaser:full-release"
           runnerArgs = "$MAVEN_DEFAULT_ARGS -Prelease"
         }
 
