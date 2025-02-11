@@ -14,19 +14,19 @@ class Maven(
     init: BuildType.() -> Unit = {},
 ) :
     BuildType({
-        this.id(id.toId())
-        this.name = name
+      this.id(id.toId())
+      this.name = name
 
-        steps {
-            runMaven(javaVersion) {
-                this.goals = goals
-                this.runnerArgs = "$MAVEN_DEFAULT_ARGS ${args ?: ""}"
-            }
+      steps {
+        runMaven(javaVersion) {
+          this.goals = goals
+          this.runnerArgs = "$MAVEN_DEFAULT_ARGS ${args ?: ""}"
         }
+      }
 
-        features { dockerSupport {} }
+      features { dockerSupport {} }
 
-        requirements { runOnLinux(size) }
+      requirements { runOnLinux(size) }
 
-        this.init()
+      this.init()
     })
