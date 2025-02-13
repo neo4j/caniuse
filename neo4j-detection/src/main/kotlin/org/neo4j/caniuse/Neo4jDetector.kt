@@ -2,6 +2,11 @@ package org.neo4j.caniuse
 
 import org.neo4j.driver.Driver
 
+/**
+ * [detectedWith] runs with the provided [Driver] to detect the characteristics of the Neo4j target.
+ *
+ * @return [Neo4j]
+ */
 fun Neo4j.Companion.detectedWith(driver: Driver): Neo4j {
   driver.session().use { session ->
     val params = mapOf("name" to "Neo4j Kernel")

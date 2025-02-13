@@ -2,6 +2,7 @@ package org.neo4j.caniuse
 
 import kotlin.math.sign
 
+/** Neo4j descriptor */
 data class Neo4j(
     val version: Neo4jVersion,
     val edition: Neo4jEdition,
@@ -10,6 +11,7 @@ data class Neo4j(
   companion object {}
 }
 
+/** Neo4j version */
 data class Neo4jVersion(
     val major: Int,
     val minor: Int,
@@ -31,11 +33,13 @@ data class Neo4jVersion(
   }
 }
 
+/** Neo4j edition */
 enum class Neo4jEdition {
   COMMUNITY,
   ENTERPRISE
 }
 
+/** Neo4j deployment type */
 enum class Neo4jDeploymentType {
   SELF_MANAGED,
   AURA
