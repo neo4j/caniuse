@@ -46,7 +46,7 @@ object Cypher {
    * @return [Neo4jPredicate]
    */
   fun concurrentCallInTransactions(): Neo4jPredicate {
-    return Neo4jPredicate { it.version >= V5_21_0 }
+    return Neo4jPredicate { it.version >= V5_18_0 }
   }
 
   /**
@@ -199,6 +199,6 @@ object Cypher {
    * @return [Neo4jPredicate]
    */
   fun explicitCypherSelection(): Neo4jPredicate {
-    return Neo4jPredicate { it.version >= V5_26_0 }
+    return Neo4jPredicate { it.version >= V5_21_0 }
   }
 }
