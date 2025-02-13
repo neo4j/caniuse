@@ -64,6 +64,13 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-bom</artifactId>
+                <version>${kotlin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>caniuse-api</artifactId>
                 <version>${project.version}</version>

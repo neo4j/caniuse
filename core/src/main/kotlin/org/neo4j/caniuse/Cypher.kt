@@ -45,8 +45,10 @@ object Cypher {
    *
    * @return [Neo4jPredicate]
    */
+  @PartiallyIntroducedIn(
+      major = 5, minor = 18, description = "the syntax was supported but ignored before 5.21.0")
   fun concurrentCallInTransactions(): Neo4jPredicate {
-    return Neo4jPredicate { it.version >= V5_18_0 }
+    return Neo4jPredicate { it.version >= V5_21_0 }
   }
 
   /**
@@ -199,6 +201,10 @@ object Cypher {
    * @return [Neo4jPredicate]
    */
   fun explicitCypherSelection(): Neo4jPredicate {
+    // note: the documented version says 5.26.
+    // Cypher 5 selection has been initially implemented as a no-op in 5.21.
+    // we don't want to use @PartiallyIntroducedIn here, since that initial impl
+    // does the job in that specific case anyway
     return Neo4jPredicate { it.version >= V5_21_0 }
   }
 }
