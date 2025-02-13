@@ -1,6 +1,7 @@
 package org.neo4j.caniuse
 
 import org.assertj.core.api.AssertionsForClassTypes.assertThatCode
+import org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -33,6 +34,7 @@ import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
 import org.neo4j.driver.SessionConfig
+import org.neo4j.driver.exceptions.ClientException
 import org.testcontainers.containers.Neo4jContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -199,12 +201,15 @@ class CanIUseIT {
       query: String,
       config: SessionConfig = SessionConfig.forDatabase("neo4j")
   ) {
-    assertThatCode {
-          if (canIUse(check).withNeo4j(Neo4j.detectedWith(driver))) {
-            driver.session(config).use { session -> session.run(query).consume() }
-          }
-        }
-        .doesNotThrowAnyException()
+    if (canIUse(check).withNeo4j(Neo4j.detectedWith(driver))) {
+      assertThatCode { runQuery(query, config) }.doesNotThrowAnyException()
+    } else {
+      assertThatThrownBy { runQuery(query, config) }.isInstanceOf(ClientException::class.java)
+    }
+  }
+
+  private fun runQuery(query: String, config: SessionConfig) {
+    driver.session(config).use { session -> session.run(query).consume() }
   }
 
   companion object {
