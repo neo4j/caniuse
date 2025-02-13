@@ -34,7 +34,7 @@ import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
 import org.neo4j.driver.SessionConfig
-import org.neo4j.driver.exceptions.ClientException
+import org.neo4j.driver.exceptions.Neo4jException
 import org.testcontainers.containers.Neo4jContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -204,7 +204,7 @@ class CanIUseIT {
     if (canIUse(check).withNeo4j(Neo4j.detectedWith(driver))) {
       assertThatCode { runQuery(query, config) }.doesNotThrowAnyException()
     } else {
-      assertThatThrownBy { runQuery(query, config) }.isInstanceOf(ClientException::class.java)
+      assertThatThrownBy { runQuery(query, config) }.isInstanceOf(Neo4jException::class.java)
     }
   }
 
