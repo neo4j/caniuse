@@ -1,38 +1,18 @@
 package org.neo4j.caniuse
 
+import kotlin.reflect.KFunction
 import org.assertj.core.api.AssertionsForClassTypes.assertThatCode
+import org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.neo4j.caniuse.CanIUse.canIUse
-import org.neo4j.caniuse.Cypher.callInTransactions
-import org.neo4j.caniuse.Cypher.callInTransactionsWithCompositeDatabases
-import org.neo4j.caniuse.Cypher.callInTransactionsWithCustomErrorPolicy
-import org.neo4j.caniuse.Cypher.concurrentCallInTransactions
-import org.neo4j.caniuse.Cypher.createDynamicLabels
-import org.neo4j.caniuse.Cypher.createDynamicTypes
-import org.neo4j.caniuse.Cypher.createIfNotExists
-import org.neo4j.caniuse.Cypher.dropIfExists
-import org.neo4j.caniuse.Cypher.explicitCypher5Selection
-import org.neo4j.caniuse.Cypher.explicitCypherSelection
-import org.neo4j.caniuse.Cypher.matchDynamicTypes
-import org.neo4j.caniuse.Cypher.mergeDynamicTypes
-import org.neo4j.caniuse.Cypher.namedIndexes
-import org.neo4j.caniuse.Cypher.removeDynamicLabels
-import org.neo4j.caniuse.Cypher.removeDynamicPropertyKeys
-import org.neo4j.caniuse.Cypher.setDynamicLabels
-import org.neo4j.caniuse.Cypher.setDynamicPropertyKeys
-import org.neo4j.caniuse.Cypher.showConstraints
-import org.neo4j.caniuse.Cypher.showIndexes
 import org.neo4j.caniuse.Dbms.compositeDatabases
-import org.neo4j.caniuse.Dbms.multiDatabase
-import org.neo4j.caniuse.Schema.propertyListTypeConstraints
-import org.neo4j.caniuse.Schema.propertyTypeConstraints
-import org.neo4j.caniuse.Schema.propertyUnionTypeConstraints
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
 import org.neo4j.driver.SessionConfig
+import org.neo4j.driver.exceptions.Neo4jException
 import org.testcontainers.containers.Neo4jContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -41,20 +21,20 @@ import org.testcontainers.junit.jupiter.Testcontainers
 class CanIUseIT {
   @Test
   fun supports_call_in_transactions() {
-    verify(callInTransactions(), "MATCH (n) CALL { WITH n DETACH DELETE n } IN TRANSACTIONS")
+    verify(Cypher::callInTransactions, "MATCH (n) CALL { WITH n DETACH DELETE n } IN TRANSACTIONS")
   }
 
   @Test
   fun supports_call_in_transactions_with_custom_error_policy() {
     verify(
-        callInTransactionsWithCustomErrorPolicy(),
+        Cypher::callInTransactionsWithCustomErrorPolicy,
         "MATCH (n) CALL { WITH n DETACH DELETE n } IN TRANSACTIONS ON ERROR CONTINUE")
   }
 
   @Test
   fun supports_call_in_transactions_with_composite_databases() {
     verify(
-        callInTransactionsWithCompositeDatabases(),
+        Cypher::callInTransactionsWithCompositeDatabases,
         ("UNWIND graph.names() AS graphName CALL { " +
             "  USE graph.byName( graphName ) " +
             "  MATCH (n) " +
@@ -73,87 +53,88 @@ class CanIUseIT {
   @Test
   fun supports_concurrent_call_in_transactions() {
     verify(
-        concurrentCallInTransactions(),
+        Cypher::concurrentCallInTransactions,
         "MATCH (n) CALL { WITH n DETACH DELETE n } IN CONCURRENT TRANSACTIONS")
   }
 
   @Test
   fun supports_named_indexes() {
-    verify(namedIndexes(), "CREATE INDEX a_name FOR (n:Node) ON (n.prop)")
+    verify(Cypher::namedIndexes, "CREATE INDEX a_name FOR (n:Node) ON (n.prop)")
   }
 
   @Test
   fun supports_drop_if_exists() {
-    verify(dropIfExists(), "DROP INDEX another_name IF EXISTS")
+    verify(Cypher::dropIfExists, "DROP INDEX another_name IF EXISTS")
   }
 
   @Test
   fun supports_create_if_not_exists() {
-    verify(createIfNotExists(), "CREATE INDEX a_name IF NOT EXISTS FOR (n:Node) ON (n.prop)")
+    verify(Cypher::createIfNotExists, "CREATE INDEX a_name IF NOT EXISTS FOR (n:Node) ON (n.prop)")
   }
 
   @Test
   fun supports_show_indexes() {
-    verify(showIndexes(), "SHOW INDEXES")
+    verify(Cypher::showIndexes, "SHOW INDEXES")
   }
 
   @Test
   fun supports_show_constraints() {
-    verify(showConstraints(), "SHOW CONSTRAINTS")
+    verify(Cypher::showConstraints, "SHOW CONSTRAINTS")
   }
 
   @Test
   fun supports_set_dynamic_labels() {
-    verify(setDynamicLabels(), "MATCH (n) WHERE n.name IS NOT NULL SET n:$(n.name)")
+    verify(Cypher::setDynamicLabels, "MATCH (n) WHERE n.name IS NOT NULL SET n:$(n.name)")
   }
 
   @Test
   fun supports_remove_dynamic_labels() {
-    verify(removeDynamicLabels(), "MATCH (n) WHERE n.name IS NOT NULL REMOVE n:$(n.name)")
+    verify(Cypher::removeDynamicLabels, "MATCH (n) WHERE n.name IS NOT NULL REMOVE n:$(n.name)")
   }
 
   @Test
   fun supports_set_dynamic_property_keys() {
-    verify(setDynamicPropertyKeys(), "MATCH (n) SET n[n.name + \"Copy\"] = \"foobar\"")
+    verify(Cypher::setDynamicPropertyKeys, "MATCH (n) SET n[n.name + \"Copy\"] = \"foobar\"")
   }
 
   @Test
   fun supports_remove_dynamic_property_keys() {
-    verify(removeDynamicPropertyKeys(), "MATCH (n) REMOVE n[n.name + \"Copy\"]")
+    verify(Cypher::removeDynamicPropertyKeys, "MATCH (n) REMOVE n[n.name + \"Copy\"]")
   }
 
   @Test
   fun supports_create_dynamic_labels() {
-    verify(createDynamicLabels(), "WITH \"Label\" AS label CREATE (n:$(label))")
+    verify(Cypher::createDynamicLabels, "WITH \"Label\" AS label CREATE (n:$(label))")
   }
 
   @Test
   fun supports_match_dynamic_labels() {
-    verify(createDynamicLabels(), "WITH \"Label\" AS label MATCH (n:$(label)) RETURN n")
+    verify(Cypher::createDynamicLabels, "WITH \"Label\" AS label MATCH (n:$(label)) RETURN n")
   }
 
   @Test
   fun supports_merge_dynamic_labels() {
-    verify(createDynamicLabels(), "WITH \"Label\" AS label MERGE (n:$(label)) RETURN n")
+    verify(Cypher::createDynamicLabels, "WITH \"Label\" AS label MERGE (n:$(label)) RETURN n")
   }
 
   @Test
   fun supports_create_dynamic_types() {
     verify(
-        createDynamicTypes(), "WITH \"Type\" AS type MATCH (n:Foo) " + "CREATE (n)-[:$(type)]->(n)")
+        Cypher::createDynamicTypes,
+        "WITH \"Type\" AS type MATCH (n:Foo) " + "CREATE (n)-[:$(type)]->(n)")
   }
 
   @Test
   fun supports_match_dynamic_types() {
     verify(
-        matchDynamicTypes(),
+        Cypher::matchDynamicTypes,
         "WITH \"Type\" AS type MATCH (n:Foo) " + "MATCH (n)-[r:$(type)]->(n) RETURN r")
   }
 
   @Test
   fun supports_merge_dynamic_types() {
     verify(
-        mergeDynamicTypes(),
+        Cypher::mergeDynamicTypes,
         "WITH \"Type\" AS type MATCH (n:Foo) " + "MERGE (n)-[r:$(type)]->(n) RETURN r")
   }
 
@@ -161,50 +142,65 @@ class CanIUseIT {
   fun supports_multi_databases() {
     // composite databases is implicitly tested in the test setup
     verify(
-        multiDatabase(), "CREATE OR REPLACE DATABASE foobar", SessionConfig.forDatabase("system"))
+        Dbms::multiDatabase,
+        "CREATE OR REPLACE DATABASE foobar",
+        SessionConfig.forDatabase("system"))
   }
 
   @Test
   fun supports_property_type_constraint() {
     verify(
-        propertyTypeConstraints(), "CREATE CONSTRAINT c1 FOR (c:Foobar) REQUIRE c.baz IS :: STRING")
+        Schema::propertyTypeConstraints,
+        "CREATE CONSTRAINT c1 FOR (c:Foobar) REQUIRE c.baz IS :: STRING")
   }
 
   @Test
   fun supports_property_list_type_constraint() {
     verify(
-        propertyListTypeConstraints(),
+        Schema::propertyListTypeConstraints,
         "CREATE CONSTRAINT c2 FOR (c:Foobar) REQUIRE c.qix IS :: LIST<BOOLEAN NOT NULL>")
   }
 
   @Test
   fun supports_property_union_type_constraint() {
     verify(
-        propertyUnionTypeConstraints(),
+        Schema::propertyUnionTypeConstraints,
         "CREATE CONSTRAINT c3 FOR (c:Foobar) REQUIRE c.mux IS :: INTEGER | FLOAT | STRING")
   }
 
   @Test
   fun supports_cypher_explicit_version_selection() {
-    verify(explicitCypherSelection(), "CYPHER 5 RETURN 42")
+    verify(Cypher::explicitCypherSelection, "CYPHER 5 RETURN 42")
   }
 
   @Test
   fun supports_cypher_explicit_version_5_selection() {
-    verify(explicitCypher5Selection(), "CYPHER 5 RETURN 42")
+    verify(Cypher::explicitCypher5Selection, "CYPHER 5 RETURN 42")
   }
 
   private fun verify(
-      check: Neo4jPredicate,
+      check: KFunction<Neo4jPredicate>,
       query: String,
       config: SessionConfig = SessionConfig.forDatabase("neo4j")
   ) {
-    assertThatCode {
-          if (canIUse(check).withNeo4j(Neo4j.detectedWith(driver))) {
-            driver.session(config).use { session -> session.run(query).consume() }
-          }
-        }
-        .doesNotThrowAnyException()
+    val neo4j = Neo4j.detectedWith(driver)
+    if (canIUse(check.call()).withNeo4j(neo4j) || partiallyIntroducedBefore(check, neo4j)) {
+      assertThatCode { runQuery(query, config) }.doesNotThrowAnyException()
+    } else {
+      assertThatThrownBy { runQuery(query, config) }.isInstanceOf(Neo4jException::class.java)
+    }
+  }
+
+  private fun partiallyIntroducedBefore(check: KFunction<Neo4jPredicate>, neo4j: Neo4j): Boolean {
+    val annotation = check.annotations.firstOrNull { it is PartiallyIntroducedIn }
+    if (annotation == null) {
+      return false
+    }
+    return asNeo4jPredicate(annotation as PartiallyIntroducedIn).withNeo4j(neo4j)
+  }
+
+  private fun runQuery(query: String, config: SessionConfig) {
+    driver.session(config).use { session -> session.run(query).consume() }
   }
 
   companion object {
