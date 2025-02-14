@@ -14,7 +14,7 @@ object DockerNeo4j {
   }
 
   fun version(): String {
-    val version = System.getenv("NEO4J_VERSION") ?: return "5.18"
+    val version = System.getenv("NEO4J_VERSION") ?: return "4.4"
     return version
   }
 
