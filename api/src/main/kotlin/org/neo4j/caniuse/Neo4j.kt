@@ -1,5 +1,6 @@
 package org.neo4j.caniuse
 
+import java.io.Serializable
 import kotlin.math.sign
 
 /** Neo4j descriptor */
@@ -7,7 +8,7 @@ data class Neo4j(
     val version: Neo4jVersion,
     val edition: Neo4jEdition,
     val deploymentType: Neo4jDeploymentType,
-) {
+) : Serializable {
   companion object {}
 }
 
@@ -16,7 +17,7 @@ data class Neo4jVersion(
     val major: Int,
     val minor: Int,
     val patch: Int = Int.MAX_VALUE,
-) : Comparable<Neo4jVersion> {
+) : Comparable<Neo4jVersion>, Serializable {
 
   override fun compareTo(other: Neo4jVersion): Int {
     if (major != other.major) {
