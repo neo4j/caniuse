@@ -183,7 +183,7 @@ class CanIUseIT {
       query: String,
       config: SessionConfig = SessionConfig.forDatabase("neo4j")
   ) {
-    val neo4j = Neo4j.detectedWith(driver)
+    val neo4j = Neo4jDetector.detect(driver)
     if (canIUse(check.call()).withNeo4j(neo4j) || partiallyIntroducedBefore(check, neo4j)) {
       assertThatCode { runQuery(query, config) }.doesNotThrowAnyException()
     } else {
@@ -217,7 +217,7 @@ class CanIUseIT {
     fun beforeAll() {
       driver = GraphDatabase.driver(neo4j.boltUrl, AuthTokens.basic("neo4j", "letmein!"))
       driver.verifyConnectivity()
-      if (canIUse(compositeDatabases()).withNeo4j(Neo4j.detectedWith(driver))) {
+      if (canIUse(compositeDatabases()).withNeo4j(Neo4jDetector.detect(driver))) {
         driver.session(SessionConfig.forDatabase("system")).use { session ->
           session.run("CREATE OR REPLACE COMPOSITE DATABASE inventory")
         }
