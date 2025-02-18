@@ -56,7 +56,7 @@ import org.neo4j.driver.GraphDatabase
 fun main(args: Array<String>) {
     GraphDatabase.driver("neo4j://localhost", AuthTokens.basic("neo4j", "letmein!")).use { driver ->
         {
-            val neo4j = Neo4j.detectedWith(driver)
+            val neo4j = Neo4jDetector.detect(driver)
             if (canIUse(Cypher.concurrentCallInTransactions()).withNeo4j(neo4j)) {
                 // run concurrent CALL IN TRANSACTIONS \o/
             }

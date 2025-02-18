@@ -16,7 +16,7 @@ internal class Neo4jDetectorIT {
   @Test
   fun detects_neo4j_instance() {
     GraphDatabase.driver(neo4j.boltUrl, AuthTokens.basic("neo4j", "letmein!")).use { driver ->
-      val neo4j = Neo4j.detectedWith(driver)
+      val neo4j = Neo4jDetector.detect(driver)
       assertThat(neo4j.edition)
           .isEqualTo(if (enterprise()) Neo4jEdition.ENTERPRISE else Neo4jEdition.COMMUNITY)
       val version = version()
