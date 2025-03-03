@@ -3,6 +3,20 @@ package org.neo4j.caniuse
 internal object Neo4jVersionParser {
 
   fun parse(version: String): Neo4jVersion {
+    // Check for special format with calver hyphen
+    if (version.contains('-')) {
+      val afterHyphen = version.substringAfter('-')
+      if (afterHyphen.length >= 6) { // Expecting format like "2025020"
+        try {
+          val major = afterHyphen.substring(0, 4).toInt()
+          val minor = afterHyphen.substring(4, 6).toInt()
+          return Neo4jVersion(major, minor)
+        } catch (_: NumberFormatException) {
+          return Neo4jVersion.LATEST
+        }
+      }
+    }
+
     var major = -1
     var minor = -1
     var patch = -1

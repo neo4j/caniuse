@@ -14,6 +14,8 @@ internal class Neo4jVersionParserTest {
     assertThat(parse("2025.01.0")).isEqualTo(Neo4jVersion(2025, 1, 0))
     assertThat(parse("2025.01-aura")).isEqualTo(Neo4jVersion(2025, 1))
     assertThat(parse("2025.01.0-21379")).isEqualTo(Neo4jVersion(2025, 1, 0))
+    assertThat(parse("5.27.0-2025020")).isEqualTo(Neo4jVersion(2025, 2))
+    assertThat(parse("5.27.0-2026030")).isEqualTo(Neo4jVersion(2026, 3))
   }
 
   @Test
