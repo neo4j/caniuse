@@ -8,9 +8,10 @@ internal object Neo4jVersionParser {
       val afterHyphen = version.substringAfter('-')
       if (afterHyphen.length >= 6) { // Expecting format like "2025020"
         try {
-          val major = afterHyphen.substring(0, 4).toInt()
-          val minor = afterHyphen.substring(4, 6).toInt()
-          return Neo4jVersion(major, minor)
+          val majorYear = afterHyphen.substring(0, 4).toInt()
+          val minorMonth = afterHyphen.substring(4, 6).toInt()
+          val patch = afterHyphen.substring(6).toInt()
+          return Neo4jVersion(majorYear, minorMonth, patch)
         } catch (_: NumberFormatException) {
           return Neo4jVersion.LATEST
         }

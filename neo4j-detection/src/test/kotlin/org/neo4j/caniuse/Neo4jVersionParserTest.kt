@@ -14,8 +14,9 @@ internal class Neo4jVersionParserTest {
     assertThat(parse("2025.01.0")).isEqualTo(Neo4jVersion(2025, 1, 0))
     assertThat(parse("2025.01-aura")).isEqualTo(Neo4jVersion(2025, 1))
     assertThat(parse("2025.01.0-21379")).isEqualTo(Neo4jVersion(2025, 1, 0))
-    assertThat(parse("5.27.0-2025020")).isEqualTo(Neo4jVersion(2025, 2))
-    assertThat(parse("5.27.0-2026030")).isEqualTo(Neo4jVersion(2026, 3))
+    assertThat(parse("5.27.0-2025020")).isEqualTo(Neo4jVersion(2025, 2, 0))
+    assertThat(parse("5.27.0-2026032")).isEqualTo(Neo4jVersion(2026, 3, 2))
+    assertThat(parse("5.28.0-20250125")).isEqualTo(Neo4jVersion(2025, 1, 25))
   }
 
   @Test
@@ -32,5 +33,6 @@ internal class Neo4jVersionParserTest {
     assertThat(parse(".2025.6")).isEqualTo(Neo4jVersion.LATEST)
     assertThat(parse("  5 .26.2    ")).isEqualTo(Neo4jVersion.LATEST)
     assertThat(parse("  5 . 26 .2    ")).isEqualTo(Neo4jVersion.LATEST)
+    assertThat(parse("5.27.0-2025ab32")).isEqualTo(Neo4jVersion.LATEST)
   }
 }
