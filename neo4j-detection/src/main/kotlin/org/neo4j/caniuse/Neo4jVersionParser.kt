@@ -1,21 +1,18 @@
 package org.neo4j.caniuse
 
+import java.util.regex.Pattern
+
 internal object Neo4jVersionParser {
 
+  // Matches versions with format: 5.27.0-2025020
+  private val MIXED_CALVER_FORMAT = Pattern.compile("[^-]+-(\\d{4})(\\d{2})(\\d{1,})\$")
+
   fun parse(version: String): Neo4jVersion {
-    // Check for special format with calver hyphen
-    if (version.contains('-')) {
-      val afterHyphen = version.substringAfter('-')
-      if (afterHyphen.length >= 6) { // Expecting format like "2025020"
-        try {
-          val majorYear = afterHyphen.substring(0, 4).toInt()
-          val minorMonth = afterHyphen.substring(4, 6).toInt()
-          val patch = afterHyphen.substring(6).toInt()
-          return Neo4jVersion(majorYear, minorMonth, patch)
-        } catch (_: NumberFormatException) {
-          return Neo4jVersion.LATEST
-        }
-      }
+
+    // Check for special case with mixed [original-calver] format
+    val mixCalVersion = parseRegex(version)
+    if (mixCalVersion != null) {
+      return mixCalVersion
     }
 
     var major = -1
@@ -68,6 +65,20 @@ internal object Neo4jVersionParser {
       return Neo4jVersion(major, minor)
     }
     return Neo4jVersion(major, minor, patch)
+  }
+  /**
+   * Parse mixed CalVer format Expects format of the type: 5.27.0-2025020 which corresponds to
+   * major=2025, minor=2, patch=0
+   */
+  fun parseRegex(version: String): Neo4jVersion? {
+    val matcher = MIXED_CALVER_FORMAT.matcher(version)
+    if (matcher.find()) {
+      val major = matcher.group(1).toInt()
+      val minor = matcher.group(2).toInt()
+      val patch = matcher.group(3).toInt()
+      return Neo4jVersion(major, minor, patch)
+    }
+    return null
   }
 
   private fun parseMinor(buffer: String): Int {

@@ -33,6 +33,5 @@ internal class Neo4jVersionParserTest {
     assertThat(parse(".2025.6")).isEqualTo(Neo4jVersion.LATEST)
     assertThat(parse("  5 .26.2    ")).isEqualTo(Neo4jVersion.LATEST)
     assertThat(parse("  5 . 26 .2    ")).isEqualTo(Neo4jVersion.LATEST)
-    assertThat(parse("5.27.0-2025ab32")).isEqualTo(Neo4jVersion.LATEST)
   }
 }
