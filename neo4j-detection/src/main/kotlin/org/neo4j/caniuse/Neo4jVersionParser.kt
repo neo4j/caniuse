@@ -66,11 +66,12 @@ internal object Neo4jVersionParser {
     }
     return Neo4jVersion(major, minor, patch)
   }
+
   /**
    * Parse mixed CalVer format Expects format of the type: 5.27.0-2025020 which corresponds to
    * major=2025, minor=2, patch=0
    */
-  fun parseRegex(version: String): Neo4jVersion? {
+  private fun parseRegex(version: String): Neo4jVersion? {
     val matcher = MIXED_CALVER_FORMAT.matcher(version)
     if (matcher.find()) {
       val major = matcher.group(1).toInt()
