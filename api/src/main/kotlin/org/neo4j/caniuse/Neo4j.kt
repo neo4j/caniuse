@@ -9,7 +9,7 @@ data class Neo4j(
     val edition: Neo4jEdition,
     val deploymentType: Neo4jDeploymentType,
 ) : Serializable {
-  companion object {}
+    companion object {}
 }
 
 /** Neo4j version */
@@ -19,29 +19,29 @@ data class Neo4jVersion(
     val patch: Int = Int.MAX_VALUE,
 ) : Comparable<Neo4jVersion>, Serializable {
 
-  override fun compareTo(other: Neo4jVersion): Int {
-    if (major != other.major) {
-      return (major - other.major).sign
+    override fun compareTo(other: Neo4jVersion): Int {
+        if (major != other.major) {
+            return (major - other.major).sign
+        }
+        if (minor != other.minor) {
+            return (minor - other.minor).sign
+        }
+        return (patch - other.patch).sign
     }
-    if (minor != other.minor) {
-      return (minor - other.minor).sign
-    }
-    return (patch - other.patch).sign
-  }
 
-  companion object {
-    val LATEST = Neo4jVersion(Int.MAX_VALUE, 0, 0)
-  }
+    companion object {
+        val LATEST = Neo4jVersion(Int.MAX_VALUE, 0, 0)
+    }
 }
 
 /** Neo4j edition */
 enum class Neo4jEdition {
-  COMMUNITY,
-  ENTERPRISE
+    COMMUNITY,
+    ENTERPRISE
 }
 
 /** Neo4j deployment type */
 enum class Neo4jDeploymentType {
-  SELF_MANAGED,
-  AURA
+    SELF_MANAGED,
+    AURA
 }
