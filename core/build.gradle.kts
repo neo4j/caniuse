@@ -1,0 +1,14 @@
+dependencies {
+    api(project(":caniuse-api"))
+    api(libs.org.jetbrains.kotlin.kotlin.stdlib)
+    testImplementation(project(":caniuse-neo4j-detection"))
+    testImplementation(libs.org.assertj.assertj.core)
+    testImplementation(libs.org.jetbrains.kotlin.kotlin.reflect)
+    testImplementation(libs.org.junit.jupiter.junit.jupiter)
+    testImplementation(libs.org.neo4j.driver.neo4j.java.driver.slim)
+    testImplementation(libs.org.slf4j.slf4j.nop)
+    testImplementation(libs.org.testcontainers.junit.jupiter)
+    testImplementation(libs.org.testcontainers.neo4j)
+}
+
+description = "caniuse-core"
