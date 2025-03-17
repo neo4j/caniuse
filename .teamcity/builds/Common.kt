@@ -45,6 +45,7 @@ val NEO4J_VERSIONS =
         "5.25",
         "5.26",
         "2025.01.0",
+        "2025.02.0",
     )
 
 enum class LinuxSize(val value: String) {
