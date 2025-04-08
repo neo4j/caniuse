@@ -6,6 +6,8 @@ internal object Versions {
 
   internal val V4_1_3 = Neo4jVersion(4, 1, 3)
 
+  internal val V4_2_0 = Neo4jVersion(4, 2, 0)
+
   internal val V4_3_0 = Neo4jVersion(4, 3, 0)
 
   internal val V4_4_0 = Neo4jVersion(4, 4, 0)

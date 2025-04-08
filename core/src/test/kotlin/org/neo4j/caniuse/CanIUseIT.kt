@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.neo4j.caniuse.CanIUse.canIUse
 import org.neo4j.caniuse.Dbms.compositeDatabases
+import org.neo4j.caniuse.Schema.nodePropertyUniquenessConstraints
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
@@ -186,12 +187,99 @@ class CanIUseIT {
         SessionConfig.forDatabase("system"))
   }
 
+  @Test
+  fun supports_node_property_uniqueness_constraint() {
+    verify(
+        Schema::nodePropertyUniquenessConstraints,
+        { neo4j ->
+          val name = constraintNameOrEmpty(neo4j, "c4")
+          if (canIUse(Cypher.constraintsWithRequireKeyword()).withNeo4j(neo4j)) {
+            "CREATE CONSTRAINT $name FOR (c:Foobar) REQUIRE c.x IS UNIQUE"
+          } else {
+            "CREATE CONSTRAINT $name ON (c:Foobar) ASSERT c.x IS UNIQUE"
+          }
+        })
+  }
+
+  @Test
+  fun supports_node_property_existence_constraint() {
+    verify(
+        Schema::nodePropertyExistenceConstraints,
+        { neo4j ->
+          val name = constraintNameOrEmpty(neo4j, "c5")
+          if (canIUse(Cypher.constraintsWithRequireKeyword()).withNeo4j(neo4j)) {
+            "CREATE CONSTRAINT $name FOR (c:Foobar) REQUIRE c.x IS NOT NULL"
+          } else {
+            "CREATE CONSTRAINT $name FOR (c:Foobar) ASSERT exists(c.x)"
+          }
+        })
+  }
+
+  @Test
+  fun supports_node_key_constraint() {
+    verify(Schema::nodeKeyConstraints, "CREATE CONSTRAINT c6 FOR (c:Foobar) REQUIRE c.x IS KEY")
+  }
+
+  @Test
+  fun supports_relationship_property_uniqueness_constraint() {
+    verify(
+        Schema::relationshipPropertyUniquenessConstraints,
+        "CREATE CONSTRAINT c7 FOR ()-[r:Related]->() REQUIRE r.x IS UNIQUE")
+  }
+
+  @Test
+  fun supports_relationship_property_existence_constraint() {
+    verify(
+        Schema::relationshipPropertyExistenceConstraints,
+        { neo4j ->
+          val name = constraintNameOrEmpty(neo4j, "c8")
+          if (canIUse(Cypher.constraintsWithRequireKeyword()).withNeo4j(neo4j)) {
+            "CREATE CONSTRAINT $name FOR ()-[r:Related]->() REQUIRE r.x IS NOT NULL"
+          } else {
+            "CREATE CONSTRAINT $name ON ()-[r:Related]->() ASSERT exists(r.x)"
+          }
+        })
+  }
+
+  @Test
+  fun supports_relationship_key_constraint() {
+    verify(
+        Schema::relationshipKeyConstraints,
+        "CREATE CONSTRAINT c9 FOR ()-[r:Related]->() REQUIRE r.x IS KEY")
+  }
+
+  private fun constraintNameOrEmpty(neo4j: Neo4j, name: String): String =
+      if (canIUse(Cypher.namedConstraints()).withNeo4j(neo4j)) {
+        name
+      } else {
+        ""
+      }
+
+  private fun verify(
+      check: KFunction<Neo4jPredicate>,
+      queryGenerator: (neo4j: Neo4j) -> String,
+      config: SessionConfig = SessionConfig.forDatabase("neo4j")
+  ) {
+    val neo4j = Neo4jDetector.detect(driver)
+    val query = queryGenerator.invoke(neo4j)
+    return doVerify(check, neo4j, query, config)
+  }
+
   private fun verify(
       check: KFunction<Neo4jPredicate>,
       query: String,
       config: SessionConfig = SessionConfig.forDatabase("neo4j")
   ) {
     val neo4j = Neo4jDetector.detect(driver)
+    doVerify(check, neo4j, query, config)
+  }
+
+  private fun doVerify(
+      check: KFunction<Neo4jPredicate>,
+      neo4j: Neo4j,
+      query: String,
+      config: SessionConfig
+  ) {
     if (canIUse(check.call()).withNeo4j(neo4j) || partiallyIntroducedBefore(check, neo4j)) {
       assertThatCode { runQuery(query, config) }.doesNotThrowAnyException()
     } else {
