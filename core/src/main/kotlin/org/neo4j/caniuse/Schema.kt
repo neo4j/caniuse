@@ -102,9 +102,7 @@ object Schema {
    * @return [Neo4jPredicate]
    */
   fun relationshipPropertyUniquenessConstraints(): Neo4jPredicate {
-    return Neo4jPredicate { neo4j: Neo4j ->
-      neo4j.edition == Neo4jEdition.ENTERPRISE && neo4j.version >= V5_7_0
-    }
+    return Neo4jPredicate { neo4j: Neo4j -> neo4j.version >= V5_7_0 }
   }
 
   /**

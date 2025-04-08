@@ -194,9 +194,9 @@ class CanIUseIT {
         { neo4j ->
           val name = constraintNameOrEmpty(neo4j, "c4")
           if (canIUse(Cypher.constraintsWithRequireKeyword()).withNeo4j(neo4j)) {
-            "CREATE CONSTRAINT $name FOR (c:Foobar) REQUIRE c.x IS UNIQUE"
+            "CREATE CONSTRAINT $name FOR (c:Foobar1) REQUIRE c.x IS UNIQUE"
           } else {
-            "CREATE CONSTRAINT $name ON (c:Foobar) ASSERT c.x IS UNIQUE"
+            "CREATE CONSTRAINT $name ON (c:Foobar1) ASSERT c.x IS UNIQUE"
           }
         })
   }
@@ -208,23 +208,23 @@ class CanIUseIT {
         { neo4j ->
           val name = constraintNameOrEmpty(neo4j, "c5")
           if (canIUse(Cypher.constraintsWithRequireKeyword()).withNeo4j(neo4j)) {
-            "CREATE CONSTRAINT $name FOR (c:Foobar) REQUIRE c.x IS NOT NULL"
+            "CREATE CONSTRAINT $name FOR (c:Foobar2) REQUIRE c.x IS NOT NULL"
           } else {
-            "CREATE CONSTRAINT $name FOR (c:Foobar) ASSERT exists(c.x)"
+            "CREATE CONSTRAINT $name FOR (c:Foobar2) ASSERT exists(c.x)"
           }
         })
   }
 
   @Test
   fun supports_node_key_constraint() {
-    verify(Schema::nodeKeyConstraints, "CREATE CONSTRAINT c6 FOR (c:Foobar) REQUIRE c.x IS KEY")
+    verify(Schema::nodeKeyConstraints, "CREATE CONSTRAINT c6 FOR (c:Foobar3) REQUIRE c.x IS KEY")
   }
 
   @Test
   fun supports_relationship_property_uniqueness_constraint() {
     verify(
         Schema::relationshipPropertyUniquenessConstraints,
-        "CREATE CONSTRAINT c7 FOR ()-[r:Related]->() REQUIRE r.x IS UNIQUE")
+        "CREATE CONSTRAINT c7 FOR ()-[r:Related1]->() REQUIRE r.x IS UNIQUE")
   }
 
   @Test
@@ -234,9 +234,9 @@ class CanIUseIT {
         { neo4j ->
           val name = constraintNameOrEmpty(neo4j, "c8")
           if (canIUse(Cypher.constraintsWithRequireKeyword()).withNeo4j(neo4j)) {
-            "CREATE CONSTRAINT $name FOR ()-[r:Related]->() REQUIRE r.x IS NOT NULL"
+            "CREATE CONSTRAINT $name FOR ()-[r:Related2]->() REQUIRE r.x IS NOT NULL"
           } else {
-            "CREATE CONSTRAINT $name ON ()-[r:Related]->() ASSERT exists(r.x)"
+            "CREATE CONSTRAINT $name ON ()-[r:Related2]->() ASSERT exists(r.x)"
           }
         })
   }
@@ -245,7 +245,7 @@ class CanIUseIT {
   fun supports_relationship_key_constraint() {
     verify(
         Schema::relationshipKeyConstraints,
-        "CREATE CONSTRAINT c9 FOR ()-[r:Related]->() REQUIRE r.x IS KEY")
+        "CREATE CONSTRAINT c9 FOR ()-[r:Related3]->() REQUIRE r.x IS KEY")
   }
 
   private fun constraintNameOrEmpty(neo4j: Neo4j, name: String): String =

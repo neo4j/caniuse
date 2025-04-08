@@ -490,9 +490,9 @@ internal class CanIUseTest {
       "false,community,5,5",
       "false,enterprise,5,5",
       "true,enterprise,5,7",
-      "false,community,5,26",
+      "true,community,5,26",
       "true,enterprise,5,26",
-      "false,community,2025,1",
+      "true,community,2025,1",
       "true,enterprise,2025,1")
   @ParameterizedTest
   fun supports_relationship_property_uniqueness_constraints(
