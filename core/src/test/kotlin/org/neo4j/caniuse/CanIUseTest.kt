@@ -26,6 +26,7 @@ import org.neo4j.caniuse.Cypher.setDynamicLabels
 import org.neo4j.caniuse.Cypher.setDynamicPropertyKeys
 import org.neo4j.caniuse.Cypher.showConstraints
 import org.neo4j.caniuse.Cypher.showIndexes
+import org.neo4j.caniuse.Dbms.changeDataCapture
 import org.neo4j.caniuse.Dbms.compositeDatabases
 import org.neo4j.caniuse.Dbms.multiDatabase
 import org.neo4j.caniuse.Schema.propertyListTypeConstraints
@@ -385,5 +386,22 @@ internal class CanIUseTest {
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
   ) {
     assertThat(canIUse(explicitCypher5Selection()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,4,4",
+      "false,enterprise,4,4",
+      "false,community,5,0",
+      "false,enterprise,5,0",
+      "false,community,5,23",
+      "true,enterprise,5,23",
+      "false,community,2025,1",
+      "true,enterprise,2025,1")
+  @ParameterizedTest
+  fun supports_change_data_capture(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(changeDataCapture()).withNeo4j(neo4j)).isEqualTo(result)
   }
 }

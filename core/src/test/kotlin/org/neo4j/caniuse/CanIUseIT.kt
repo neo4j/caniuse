@@ -178,6 +178,14 @@ class CanIUseIT {
     verify(Cypher::explicitCypher5Selection, "CYPHER 5 RETURN 42")
   }
 
+  @Test
+  fun supports_change_data_capture() {
+    verify(
+        Dbms::changeDataCapture,
+        "CREATE OR REPLACE DATABASE foobar OPTIONS {txLogEnrichment: 'FULL'}",
+        SessionConfig.forDatabase("system"))
+  }
+
   private fun verify(
       check: KFunction<Neo4jPredicate>,
       query: String,
