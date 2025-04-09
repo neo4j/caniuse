@@ -207,4 +207,22 @@ object Cypher {
     // does the job in that specific case anyway
     return Neo4jPredicate { it.version >= V5_21_0 }
   }
+
+  /**
+   * Whether named constraints are supported
+   *
+   * @return [Neo4jPredicate]
+   */
+  fun namedConstraints(): Neo4jPredicate {
+    return Neo4jPredicate { it.version >= V4_0_0 }
+  }
+
+  /**
+   * Whether constraints with REQUIRE keywords are supported
+   *
+   * @return [Neo4jPredicate]
+   */
+  fun constraintsWithRequireKeyword(): Neo4jPredicate {
+    return Neo4jPredicate { it.version >= V4_4_0 }
+  }
 }

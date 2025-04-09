@@ -9,6 +9,7 @@ import org.neo4j.caniuse.Cypher.callInTransactions
 import org.neo4j.caniuse.Cypher.callInTransactionsWithCompositeDatabases
 import org.neo4j.caniuse.Cypher.callInTransactionsWithCustomErrorPolicy
 import org.neo4j.caniuse.Cypher.concurrentCallInTransactions
+import org.neo4j.caniuse.Cypher.constraintsWithRequireKeyword
 import org.neo4j.caniuse.Cypher.createDynamicLabels
 import org.neo4j.caniuse.Cypher.createDynamicTypes
 import org.neo4j.caniuse.Cypher.createIfNotExists
@@ -19,6 +20,7 @@ import org.neo4j.caniuse.Cypher.matchDynamicLabels
 import org.neo4j.caniuse.Cypher.matchDynamicTypes
 import org.neo4j.caniuse.Cypher.mergeDynamicLabels
 import org.neo4j.caniuse.Cypher.mergeDynamicTypes
+import org.neo4j.caniuse.Cypher.namedConstraints
 import org.neo4j.caniuse.Cypher.namedIndexes
 import org.neo4j.caniuse.Cypher.removeDynamicLabels
 import org.neo4j.caniuse.Cypher.removeDynamicPropertyKeys
@@ -29,9 +31,15 @@ import org.neo4j.caniuse.Cypher.showIndexes
 import org.neo4j.caniuse.Dbms.changeDataCapture
 import org.neo4j.caniuse.Dbms.compositeDatabases
 import org.neo4j.caniuse.Dbms.multiDatabase
+import org.neo4j.caniuse.Schema.nodeKeyConstraints
+import org.neo4j.caniuse.Schema.nodePropertyExistenceConstraints
+import org.neo4j.caniuse.Schema.nodePropertyUniquenessConstraints
 import org.neo4j.caniuse.Schema.propertyListTypeConstraints
 import org.neo4j.caniuse.Schema.propertyTypeConstraints
 import org.neo4j.caniuse.Schema.propertyUnionTypeConstraints
+import org.neo4j.caniuse.Schema.relationshipKeyConstraints
+import org.neo4j.caniuse.Schema.relationshipPropertyExistenceConstraints
+import org.neo4j.caniuse.Schema.relationshipPropertyUniquenessConstraints
 import org.neo4j.caniuse.Schema.vectorIndexes
 
 internal class CanIUseTest {
@@ -115,6 +123,26 @@ internal class CanIUseTest {
   @ParameterizedTest
   fun supports_named_indexes(result: Boolean, @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j) {
     assertThat(canIUse(namedIndexes()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,3,5", "false,enterprise,3,5", "true,community,4,0", "true,enterprise,4,0")
+  @ParameterizedTest
+  fun supports_named_constraints(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(namedConstraints()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,3,5", "false,enterprise,3,5", "true,community,4,4", "true,enterprise,4,4")
+  @ParameterizedTest
+  fun supports_constraints_with_require_keyword(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(constraintsWithRequireKeyword()).withNeo4j(neo4j)).isEqualTo(result)
   }
 
   @CsvSource(
@@ -403,5 +431,111 @@ internal class CanIUseTest {
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
   ) {
     assertThat(canIUse(changeDataCapture()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,2,0",
+      "false,enterprise,2,0",
+      "true,community,4,3",
+      "true,enterprise,4,3",
+      "true,community,5,26",
+      "true,enterprise,5,26",
+      "true,community,2025,1",
+      "true,enterprise,2025,1")
+  @ParameterizedTest
+  fun supports_node_property_uniqueness_constraints(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(nodePropertyUniquenessConstraints()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,2,0",
+      "false,enterprise,2,0",
+      "false,community,4,3",
+      "true,enterprise,4,3",
+      "false,community,5,26",
+      "true,enterprise,5,26",
+      "false,community,2025,1",
+      "true,enterprise,2025,1")
+  @ParameterizedTest
+  fun supports_node_property_existence_constraints(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(nodePropertyExistenceConstraints()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,2,0",
+      "false,enterprise,2,0",
+      "false,community,4,3",
+      "true,enterprise,4,3",
+      "false,community,5,26",
+      "true,enterprise,5,26",
+      "false,community,2025,1",
+      "true,enterprise,2025,1")
+  @ParameterizedTest
+  fun supports_node_key_constraints(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(nodeKeyConstraints()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,4,3",
+      "false,enterprise,4,3",
+      "false,community,5,5",
+      "false,enterprise,5,5",
+      "true,enterprise,5,7",
+      "true,community,5,26",
+      "true,enterprise,5,26",
+      "true,community,2025,1",
+      "true,enterprise,2025,1")
+  @ParameterizedTest
+  fun supports_relationship_property_uniqueness_constraints(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(relationshipPropertyUniquenessConstraints()).withNeo4j(neo4j))
+        .isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,2,0",
+      "false,enterprise,2,0",
+      "false,community,4,3",
+      "true,enterprise,4,3",
+      "false,community,5,26",
+      "true,enterprise,5,26",
+      "false,community,2025,1",
+      "true,enterprise,2025,1")
+  @ParameterizedTest
+  fun supports_relationship_property_existence_constraints(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(relationshipPropertyExistenceConstraints()).withNeo4j(neo4j))
+        .isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,4,3",
+      "false,enterprise,4,3",
+      "false,community,5,5",
+      "false,enterprise,5,5",
+      "true,enterprise,5,7",
+      "false,community,5,26",
+      "true,enterprise,5,26",
+      "false,community,2025,1",
+      "true,enterprise,2025,1")
+  @ParameterizedTest
+  fun supports_relationship_key_constraints(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(relationshipKeyConstraints()).withNeo4j(neo4j)).isEqualTo(result)
   }
 }
