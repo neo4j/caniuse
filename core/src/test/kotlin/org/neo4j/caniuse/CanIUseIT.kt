@@ -217,7 +217,8 @@ class CanIUseIT {
 
   @Test
   fun supports_node_key_constraint() {
-    verify(Schema::nodeKeyConstraints, "CREATE CONSTRAINT c6 FOR (c:Foobar3) REQUIRE c.x IS KEY")
+    verify(
+        Schema::nodeKeyConstraints, "CREATE CONSTRAINT c6 FOR (c:Foobar3) REQUIRE c.x IS NODE KEY")
   }
 
   @Test
@@ -245,7 +246,7 @@ class CanIUseIT {
   fun supports_relationship_key_constraint() {
     verify(
         Schema::relationshipKeyConstraints,
-        "CREATE CONSTRAINT c9 FOR ()-[r:Related3]->() REQUIRE r.x IS KEY")
+        "CREATE CONSTRAINT c9 FOR ()-[r:Related3]->() REQUIRE r.x IS RELATIONSHIP KEY")
   }
 
   private fun constraintNameOrEmpty(neo4j: Neo4j, name: String): String =
