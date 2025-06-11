@@ -43,9 +43,20 @@ val NEO4J_VERSIONS =
         "5.23",
         "5.24",
         "5.25",
-        "5.26",
+        "5.26.0",
+        "5.26.1",
+        "5.26.2",
+        "5.26.3",
+        "5.26.4",
+        "5.26.5",
+        "5.26.6",
+        "5.26.7",
+        "5.26.8",
         "2025.01.0",
         "2025.02.0",
+        "2025.03.0",
+        "2025.04.0",
+        "2025.05.0",
     )
 
 enum class LinuxSize(val value: String) {
@@ -137,38 +148,5 @@ fun BuildSteps.commitAndPush(
             .trimIndent()
 
     conditions { doesNotMatch(dryRunParameter, "true") }
-  }
-}
-
-fun BuildSteps.publishToMavenCentral(
-    name: String,
-    dryRunParameter: String = "dry-run"
-): ScriptBuildStep {
-  return this.script {
-    this.name = name
-
-    scriptContent =
-        """
-            #!/bin/bash -exu
-            
-            DRY_RUN_OPTION=""
-            if [ "%$dryRunParameter%" = "true" ]; then
-                DRY_RUN_OPTION="--dry-run"
-            fi
-
-            ${'$'}{JAVA_HOME}/bin/java -jar lib/rt.jar ${'$'}{DRY_RUN_OPTION} --debug publish-to-maven-central \
-            --group-id org.neo4j \
-            --operator %teamcity.build.triggeredBy.username% \
-            --repository-username ${'$'}{OSSSONATYPEORG_USERNAME} \
-            --repository-password ${'$'}{OSSSONATYPEORG_PASSWORD} \
-            --repository-path ./target/staging-deploy \
-            --signing-key-passphrase "${'$'}{SIGNING_KEY_PASSPHRASE}" \
-            --staging-profile-name org.neo4j
-        """
-            .trimIndent()
-
-    dockerImage = "neo4jbuildservice/quality:general-java8"
-    dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-    dockerRunParameters = "--volume %teamcity.build.checkoutDir%/signingkeysandbox:/root/.gnupg"
   }
 }
