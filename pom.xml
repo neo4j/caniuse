@@ -39,7 +39,7 @@
         <url>https://github.com/neo4j/caniuse</url>
     </scm>
     <properties>
-        <assertj-core.version>3.27.3</assertj-core.version>
+        <assertj-core.version>3.27.4</assertj-core.version>
         <java.version>11</java.version>
         <junit-jupiter.version>5.13.4</junit-jupiter.version>
         <kotlin.version>2.2.0</kotlin.version>
