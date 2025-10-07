@@ -47,7 +47,7 @@
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <neo4j-java-driver-slim.version>4.4.20</neo4j-java-driver-slim.version>
+        <neo4j-java-driver-slim.version>4.4.21</neo4j-java-driver-slim.version>
         <netty-bom.version>4.2.4.Final</netty-bom.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j-nop.version>2.0.17</slf4j-nop.version>
