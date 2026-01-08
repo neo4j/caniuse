@@ -59,6 +59,8 @@ val NEO4J_VERSIONS =
         "2025.05.0",
     )
 
+const val SEMGREP_DOCKER_IMAGE = "semgrep/semgrep:1.146.0"
+
 enum class LinuxSize(val value: String) {
   SMALL("small"),
   LARGE("large")
