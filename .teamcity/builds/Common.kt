@@ -13,6 +13,9 @@ const val GITHUB_OWNER = "neo4j"
 const val GITHUB_REPOSITORY = "caniuse"
 const val MAVEN_DEFAULT_ARGS = "--no-transfer-progress --batch-mode --show-version"
 
+const val FULL_GITHUB_REPOSITORY = "$GITHUB_OWNER/$GITHUB_REPOSITORY"
+const val GITHUB_URL = "https://github.com/$FULL_GITHUB_REPOSITORY"
+
 const val DEFAULT_JAVA_VERSION = "11"
 
 val NEO4J_VERSIONS =
@@ -58,6 +61,8 @@ val NEO4J_VERSIONS =
         "2025.04.0",
         "2025.05.0",
     )
+
+const val SEMGREP_DOCKER_IMAGE = "semgrep/semgrep:1.146.0"
 
 enum class LinuxSize(val value: String) {
   SMALL("small"),
