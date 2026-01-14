@@ -1,5 +1,6 @@
 package builds
 
+import jetbrains.buildServer.configs.kotlin.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
 
 class SemgrepCheck(
@@ -9,7 +10,8 @@ class SemgrepCheck(
     id,
     name,
     "dependency:tree",
-    "-DoutputFile=maven_dep_tree.txt"
+    "-DoutputFile=maven_dep_tree.txt",
+    mavenVersion = MavenBuildStep.MavenVersion.Bundled_3_9()
 ) {
 
     init {
