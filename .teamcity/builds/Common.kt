@@ -79,7 +79,6 @@ val NEO4J_VERSIONS =
         "2025.10",
         "2025.11",
         "2025.12",
-        "2026.01",
     )
 
 const val SEMGREP_DOCKER_IMAGE = "semgrep/semgrep:1.146.0"
