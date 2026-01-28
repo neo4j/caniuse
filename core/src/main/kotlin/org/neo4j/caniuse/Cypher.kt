@@ -248,7 +248,7 @@ object Cypher {
    *
    * @return [Neo4jPredicate]
    */
-  fun dynamicLabelsAndTypesCanLeverageIndicesOnPropertyValues(): Neo4jPredicate {
+  fun dynamicLabelsAndTypesCanLeveragePropertyIndices(): Neo4jPredicate {
     return Neo4jPredicate {
       (it.version >= V2025_11_0) ||
           (it.deploymentType == Neo4jDeploymentType.AURA && it.version >= V5_27_0)

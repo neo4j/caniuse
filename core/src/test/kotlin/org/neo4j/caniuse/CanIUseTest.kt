@@ -14,7 +14,7 @@ import org.neo4j.caniuse.Cypher.createDynamicLabels
 import org.neo4j.caniuse.Cypher.createDynamicTypes
 import org.neo4j.caniuse.Cypher.createIfNotExists
 import org.neo4j.caniuse.Cypher.dropIfExists
-import org.neo4j.caniuse.Cypher.dynamicLabelsAndTypesCanLeverageIndicesOnPropertyValues
+import org.neo4j.caniuse.Cypher.dynamicLabelsAndTypesCanLeveragePropertyIndices
 import org.neo4j.caniuse.Cypher.explicitCypher25Selection
 import org.neo4j.caniuse.Cypher.explicitCypher5Selection
 import org.neo4j.caniuse.Cypher.explicitCypherSelection
@@ -579,11 +579,11 @@ internal class CanIUseTest {
       "true,aura,2026,1",
   )
   @ParameterizedTest
-  fun supports_dynamic_labels_and_types_can_leverage_indices_on_property_values(
+  fun supports_dynamic_labels_and_types_can_leverage_property_indices(
       result: Boolean,
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j,
   ) {
-    assertThat(canIUse(dynamicLabelsAndTypesCanLeverageIndicesOnPropertyValues()).withNeo4j(neo4j))
+    assertThat(canIUse(dynamicLabelsAndTypesCanLeveragePropertyIndices()).withNeo4j(neo4j))
         .isEqualTo(result)
   }
 }
