@@ -9,12 +9,23 @@ class Neo4jAggregator : ArgumentsAggregator {
 
   @Throws(ArgumentsAggregationException::class)
   override fun aggregateArguments(accessor: ArgumentsAccessor, context: ParameterContext): Any {
-    val edition: Neo4jEdition = Neo4jEdition.valueOf(accessor.getString(1).uppercase())
+    var deploymentType = Neo4jDeploymentType.SELF_MANAGED
+    val edition: Neo4jEdition =
+        when (accessor.getString(1).uppercase()) {
+          "AURA" -> {
+            deploymentType = Neo4jDeploymentType.AURA
+            Neo4jEdition.ENTERPRISE
+          }
+          "ENTERPRISE" -> Neo4jEdition.ENTERPRISE
+          "COMMUNITY" -> Neo4jEdition.COMMUNITY
+          else ->
+              throw ArgumentsAggregationException("Unknown Neo4j edition: ${accessor.getString(1)}")
+        }
     val version: Neo4jVersion = getVersion(accessor)
     return if (edition == Neo4jEdition.COMMUNITY) {
       neo4jCE(version)
     } else {
-      neo4jEE(version)
+      neo4jEE(version, deploymentType)
     }
   }
 
@@ -34,8 +45,11 @@ class Neo4jAggregator : ArgumentsAggregator {
       return Neo4j(version, Neo4jEdition.COMMUNITY, Neo4jDeploymentType.SELF_MANAGED)
     }
 
-    private fun neo4jEE(version: Neo4jVersion): Neo4j {
-      return Neo4j(version, Neo4jEdition.ENTERPRISE, Neo4jDeploymentType.SELF_MANAGED)
+    private fun neo4jEE(
+        version: Neo4jVersion,
+        deploymentType: Neo4jDeploymentType = Neo4jDeploymentType.SELF_MANAGED,
+    ): Neo4j {
+      return Neo4j(version, Neo4jEdition.ENTERPRISE, deploymentType)
     }
   }
 }

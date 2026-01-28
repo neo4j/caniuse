@@ -1,5 +1,7 @@
 package org.neo4j.caniuse
 
+import org.neo4j.caniuse.Versions.V2025_11_0
+import org.neo4j.caniuse.Versions.V2025_6_0
 import org.neo4j.caniuse.Versions.V4_0_0
 import org.neo4j.caniuse.Versions.V4_1_3
 import org.neo4j.caniuse.Versions.V4_3_0
@@ -8,6 +10,7 @@ import org.neo4j.caniuse.Versions.V5_18_0
 import org.neo4j.caniuse.Versions.V5_21_0
 import org.neo4j.caniuse.Versions.V5_24_0
 import org.neo4j.caniuse.Versions.V5_26_0
+import org.neo4j.caniuse.Versions.V5_27_0
 import org.neo4j.caniuse.Versions.V5_7_0
 
 /** Main entry point for Cypher-related feature detections. */
@@ -196,6 +199,19 @@ object Cypher {
   }
 
   /**
+   * Whether `CYPHER 25` is supported.
+   *
+   * @return [Neo4jPredicate]
+   */
+  fun explicitCypher25Selection(): Neo4jPredicate {
+    return Neo4jPredicate {
+          (it.version >= V2025_6_0) ||
+              (it.deploymentType == Neo4jDeploymentType.AURA && it.version >= V5_27_0)
+        }
+        .and(explicitCypher5Selection())
+  }
+
+  /**
    * Whether the general Cypher version selection clause is supported.
    *
    * @return [Neo4jPredicate]
@@ -224,5 +240,18 @@ object Cypher {
    */
   fun constraintsWithRequireKeyword(): Neo4jPredicate {
     return Neo4jPredicate { it.version >= V4_4_0 }
+  }
+
+  /**
+   * Whether MATCH and MERGE with dynamic labels and relationship types can utilize indices when
+   * matching/merging on property values.
+   *
+   * @return [Neo4jPredicate]
+   */
+  fun dynamicLabelsAndTypesCanLeverageIndicesOnPropertyValues(): Neo4jPredicate {
+    return Neo4jPredicate {
+      (it.version >= V2025_11_0) ||
+          (it.deploymentType == Neo4jDeploymentType.AURA && it.version >= V5_27_0)
+    }
   }
 }

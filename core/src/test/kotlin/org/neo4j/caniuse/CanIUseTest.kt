@@ -14,6 +14,8 @@ import org.neo4j.caniuse.Cypher.createDynamicLabels
 import org.neo4j.caniuse.Cypher.createDynamicTypes
 import org.neo4j.caniuse.Cypher.createIfNotExists
 import org.neo4j.caniuse.Cypher.dropIfExists
+import org.neo4j.caniuse.Cypher.dynamicLabelsAndTypesCanLeverageIndicesOnPropertyValues
+import org.neo4j.caniuse.Cypher.explicitCypher25Selection
 import org.neo4j.caniuse.Cypher.explicitCypher5Selection
 import org.neo4j.caniuse.Cypher.explicitCypherSelection
 import org.neo4j.caniuse.Cypher.matchDynamicLabels
@@ -417,6 +419,27 @@ internal class CanIUseTest {
   }
 
   @CsvSource(
+      "false,community,5,0",
+      "false,enterprise,5,0",
+      "false,community,5,26",
+      "false,enterprise,5,26",
+      "false,community,2025,1",
+      "false,enterprise,2025,1",
+      "true,community,2025,7",
+      "true,enterprise,2025,7",
+      "true,enterprise,2026,1",
+      "true,aura,5,27",
+      "false,aura,4,4",
+  )
+  @ParameterizedTest
+  fun supports_cypher_version_25_selection(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(explicitCypher25Selection()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
       "false,community,4,4",
       "false,enterprise,4,4",
       "false,community,5,0",
@@ -537,5 +560,30 @@ internal class CanIUseTest {
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
   ) {
     assertThat(canIUse(relationshipKeyConstraints()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,4,3",
+      "false,enterprise,4,3",
+      "false,community,5,5",
+      "false,enterprise,5,5",
+      "false,community,5,26",
+      "false,enterprise,5,26",
+      "false,community,2025,1",
+      "false,community,2025,10",
+      "true,enterprise,2025,11",
+      "true,enterprise,2025,12",
+      "false,aura,5,26",
+      "true,aura,5,27",
+      "true,aura,2025,11",
+      "true,aura,2026,1",
+  )
+  @ParameterizedTest
+  fun supports_dynamic_labels_and_types_can_leverage_indices_on_property_values(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j,
+  ) {
+    assertThat(canIUse(dynamicLabelsAndTypesCanLeverageIndicesOnPropertyValues()).withNeo4j(neo4j))
+        .isEqualTo(result)
   }
 }
