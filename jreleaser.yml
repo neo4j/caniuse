@@ -6,7 +6,7 @@ project:
   license: Apache-2.0
   copyright: Neo4j, Inc.
   links:
-    homepage: https://github.com/neo4j/neo4j-caniuse
+    homepage: https://github.com/neo4j/caniuse
   languages:
     java:
       groupId: org.neo4j
@@ -14,7 +14,7 @@ project:
 release:
   github:
     owner: neo4j
-    name: neo4j-caniuse
+    name: caniuse
     tagName: "v{{projectVersion}}"
     update:
       enabled: true
