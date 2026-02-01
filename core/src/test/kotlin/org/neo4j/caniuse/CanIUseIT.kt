@@ -249,6 +249,13 @@ class CanIUseIT {
         "CREATE CONSTRAINT c9 FOR ()-[r:Related3]->() REQUIRE r.x IS RELATIONSHIP KEY")
   }
 
+  @Test
+  fun supports_call_subquery_with_variable_scope_clause() {
+    verify(
+        Cypher::callSubqueryWithVariableScopeClause,
+        "WITH 1 AS a CALL (a) { RETURN a AS b } RETURN b")
+  }
+
   private fun constraintNameOrEmpty(neo4j: Neo4j, name: String): String =
       if (canIUse(Cypher.namedConstraints()).withNeo4j(neo4j)) {
         name
