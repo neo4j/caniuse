@@ -8,6 +8,7 @@ import org.neo4j.caniuse.Versions.V4_3_0
 import org.neo4j.caniuse.Versions.V4_4_0
 import org.neo4j.caniuse.Versions.V5_18_0
 import org.neo4j.caniuse.Versions.V5_21_0
+import org.neo4j.caniuse.Versions.V5_23_0
 import org.neo4j.caniuse.Versions.V5_24_0
 import org.neo4j.caniuse.Versions.V5_26_0
 import org.neo4j.caniuse.Versions.V5_27_0
@@ -49,7 +50,10 @@ object Cypher {
    * @return [Neo4jPredicate]
    */
   @PartiallyIntroducedIn(
-      major = 5, minor = 18, description = "the syntax was supported but ignored before 5.21.0")
+      major = 5,
+      minor = 18,
+      description = "the syntax was supported but ignored before 5.21.0",
+  )
   fun concurrentCallInTransactions(): Neo4jPredicate {
     return Neo4jPredicate { it.version >= V5_21_0 }
   }
@@ -253,5 +257,14 @@ object Cypher {
       (it.version >= V2025_11_0) ||
           (it.deploymentType == Neo4jDeploymentType.AURA && it.version >= V5_27_0)
     }
+  }
+
+  /**
+   * Whether subqueries can access variables from the calling query using the variable scope clause.
+   *
+   * @return [Neo4jPredicate]
+   */
+  fun callSubqueryWithVariableScopeClause(): Neo4jPredicate {
+    return Neo4jPredicate { it.version >= V5_23_0 }
   }
 }

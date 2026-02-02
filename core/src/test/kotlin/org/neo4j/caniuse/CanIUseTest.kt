@@ -8,6 +8,7 @@ import org.neo4j.caniuse.CanIUse.canIUse
 import org.neo4j.caniuse.Cypher.callInTransactions
 import org.neo4j.caniuse.Cypher.callInTransactionsWithCompositeDatabases
 import org.neo4j.caniuse.Cypher.callInTransactionsWithCustomErrorPolicy
+import org.neo4j.caniuse.Cypher.callSubqueryWithVariableScopeClause
 import org.neo4j.caniuse.Cypher.concurrentCallInTransactions
 import org.neo4j.caniuse.Cypher.constraintsWithRequireKeyword
 import org.neo4j.caniuse.Cypher.createDynamicLabels
@@ -585,5 +586,29 @@ internal class CanIUseTest {
   ) {
     assertThat(canIUse(dynamicLabelsAndTypesCanLeveragePropertyIndices()).withNeo4j(neo4j))
         .isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,4,3",
+      "false,enterprise,4,3",
+      "false,community,5,5",
+      "false,enterprise,5,5",
+      "true,community,5,26",
+      "true,enterprise,5,26",
+      "true,community,2025,1",
+      "true,community,2025,10",
+      "true,enterprise,2025,11",
+      "true,enterprise,2025,12",
+      "true,aura,5,23",
+      "true,aura,5,27",
+      "true,aura,2025,11",
+      "true,aura,2026,1",
+  )
+  @ParameterizedTest
+  fun supports_call_subquery_with_variable_scope_clause(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j,
+  ) {
+    assertThat(canIUse(callSubqueryWithVariableScopeClause()).withNeo4j(neo4j)).isEqualTo(result)
   }
 }
