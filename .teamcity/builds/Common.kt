@@ -3,6 +3,7 @@ package builds
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildFeatures.PullRequests
 import jetbrains.buildServer.configs.kotlin.buildFeatures.commitStatusPublisher
+import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerRegistryConnections
 import jetbrains.buildServer.configs.kotlin.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
@@ -21,16 +22,20 @@ val DEFAULT_JAVA_VERSION = JavaVersion.V_11
 enum class JavaVersion(val version: String, val dockerImage: String) {
   V_11(
       version = "11",
-      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-11-latest"),
+      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-11-latest",
+  ),
   V_17(
       version = "17",
-      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-17-latest"),
+      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-17-latest",
+  ),
   V_21(
       version = "21",
-      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-21-latest"),
+      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-21-latest",
+  ),
   V_25(
       version = "25",
-      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-25-latest"),
+      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-25-latest",
+  ),
 }
 
 val NEO4J_VERSIONS =
@@ -131,6 +136,11 @@ fun BuildFeatures.enablePullRequests() = pullRequests {
     authType = token { token = "%github-pull-request-token%" }
     filterAuthorRole = PullRequests.GitHubRoleFilter.EVERYBODY
   }
+}
+
+fun BuildFeatures.authenticateToECR() = dockerRegistryConnections {
+  loginToRegistry = on { dockerRegistryId = "PROJECT_EXT_107" }
+  cleanupPushedImages = true
 }
 
 fun CompoundStage.dependentBuildType(bt: BuildType) =
