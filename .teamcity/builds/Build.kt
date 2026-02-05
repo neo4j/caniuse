@@ -23,23 +23,21 @@ class Build(
         if (forPullRequests) dependentBuildType(PRCheck("${name}-pr-check", "pr check"))
 
         parallel {
+          dependentBuildType(SemgrepCheck("${name}-semgrep-check", "semgrep check"))
 
-            dependentBuildType(SemgrepCheck("${name}-semgrep-check", "semgrep check"))
-
-            dependentBuildType(
-                Maven(
-                    "${name}-build",
-                    "build",
-                    "sortpom:verify license:check spotless:check compile",
-                    javaVersion = DEFAULT_JAVA_VERSION,
-                ))
+          dependentBuildType(
+              Maven(
+                  "${name}-build",
+                  "build",
+                  "sortpom:verify license:check spotless:check compile",
+                  javaVersion = DEFAULT_JAVA_VERSION,
+              ))
         }
 
         parallel {
-
           NEO4J_VERSIONS.forEach { version ->
             sequential {
-              listOf<Boolean>(true, false).forEach { isEnterprise ->
+              listOf(true, false).forEach { isEnterprise ->
                 dependentBuildType(
                     Maven(
                         "${name}-test-${version}-${if (isEnterprise) "enterprise" else "community"}",

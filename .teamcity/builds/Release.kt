@@ -76,15 +76,6 @@ class Release(id: String, name: String) :
                 
                 set -eux
                 
-                apt-get update
-                apt-get install -o Acquire::Retries=10 --yes build-essential curl git unzip zip
-                
-                # Get the jreleaser downloader
-                curl -sL https://raw.githubusercontent.com/jreleaser/release-action/refs/tags/2.4.2/get_jreleaser.java > get_jreleaser.java
-
-                # Download JReleaser with version = 1.18.0
-                java get_jreleaser.java 1.18.0
-
                 if [ "%dry-run%" = "true" ]; then
                   echo "we are on a dry run, only performing upload to maven central"
                   export JRELEASER_MAVENCENTRAL_STAGE=UPLOAD
@@ -95,14 +86,13 @@ class Release(id: String, name: String) :
                   export JRELEASER_ANNOUNCE_SLACK_ACTIVE=ALWAYS
                 fi
                 
-                # Execute JReleaser
-                java -jar jreleaser-cli.jar assemble
-                java -jar jreleaser-cli.jar full-release
+                jreleaser assemble
+                jreleaser full-release
               """
                       .trimIndent()
 
               dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-              dockerImage = "eclipse-temurin:11-jdk"
+              dockerImage = JavaVersion.V_11.dockerImage
               dockerRunParameters =
                   "--volume /var/run/docker.sock:/var/run/docker.sock --volume %teamcity.build.checkoutDir%/signingkeysandbox:/root/.gnupg"
             }
