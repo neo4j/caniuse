@@ -105,7 +105,7 @@ const val NODE_DOCKER_IMAGE =
     "node:24" // "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:node-24-latest"
 
 const val SEMGREP_DOCKER_IMAGE =
-    "semgrep/semgrep:0.146.0" // "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:semgrep-latest"
+    "semgrep/semgrep:1.146.0" // "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:semgrep-latest"
 
 enum class LinuxSize(val value: String) {
   SMALL("small"),
