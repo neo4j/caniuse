@@ -22,19 +22,19 @@ val DEFAULT_JAVA_VERSION = JavaVersion.V_11
 enum class JavaVersion(val version: String, val dockerImage: String) {
   V_11(
       version = "11",
-      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-11-latest",
+      dockerImage = "%ecr-registry-connectors%:jdk-11-latest",
   ),
   V_17(
       version = "17",
-      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-17-latest",
+      dockerImage = "%ecr-registry-connectors%:jdk-17-latest",
   ),
   V_21(
       version = "21",
-      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-21-latest",
+      dockerImage = "%ecr-registry-connectors%:jdk-21-latest",
   ),
   V_25(
       version = "25",
-      dockerImage = "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:jdk-25-latest",
+      dockerImage = "%ecr-registry-connectors%:jdk-25-latest",
   ),
 }
 
@@ -101,11 +101,9 @@ val NEO4J_VERSIONS =
         "2025.12",
     )
 
-const val NODE_DOCKER_IMAGE =
-    "node:24" // "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:node-24-latest"
+const val NODE_DOCKER_IMAGE = "%ecr-registry-connectors%:node-24-latest"
 
-const val SEMGREP_DOCKER_IMAGE =
-    "semgrep/semgrep:1.146.0" // "065531048259.dkr.ecr.eu-west-1.amazonaws.com/connectors:semgrep-latest"
+const val SEMGREP_DOCKER_IMAGE = "%ecr-registry-connectors%:semgrep-latest"
 
 enum class LinuxSize(val value: String) {
   SMALL("small"),
