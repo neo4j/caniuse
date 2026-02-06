@@ -3,6 +3,7 @@ package builds
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildFeatures.PullRequests
 import jetbrains.buildServer.configs.kotlin.buildFeatures.commitStatusPublisher
+import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerRegistryConnections
 import jetbrains.buildServer.configs.kotlin.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
@@ -16,10 +17,29 @@ const val MAVEN_DEFAULT_ARGS = "--no-transfer-progress --batch-mode --show-versi
 const val FULL_GITHUB_REPOSITORY = "$GITHUB_OWNER/$GITHUB_REPOSITORY"
 const val GITHUB_URL = "https://github.com/$FULL_GITHUB_REPOSITORY"
 
-const val DEFAULT_JAVA_VERSION = "11"
+val DEFAULT_JAVA_VERSION = JavaVersion.V_11
+
+enum class JavaVersion(val version: String, val dockerImage: String) {
+  V_11(
+      version = "11",
+      dockerImage = "%ecr-registry-connectors%:jdk-11-latest",
+  ),
+  V_17(
+      version = "17",
+      dockerImage = "%ecr-registry-connectors%:jdk-17-latest",
+  ),
+  V_21(
+      version = "21",
+      dockerImage = "%ecr-registry-connectors%:jdk-21-latest",
+  ),
+  V_25(
+      version = "25",
+      dockerImage = "%ecr-registry-connectors%:jdk-25-latest",
+  ),
+}
 
 val NEO4J_VERSIONS =
-    listOf<String>(
+    listOf(
         "4.4",
         "5.1",
         "5.2",
@@ -81,7 +101,9 @@ val NEO4J_VERSIONS =
         "2025.12",
     )
 
-const val SEMGREP_DOCKER_IMAGE = "semgrep/semgrep:1.146.0"
+const val NODE_DOCKER_IMAGE = "%ecr-registry-connectors%:node-24-latest"
+
+const val SEMGREP_DOCKER_IMAGE = "%ecr-registry-connectors%:semgrep-latest"
 
 enum class LinuxSize(val value: String) {
   SMALL("small"),
@@ -114,6 +136,11 @@ fun BuildFeatures.enablePullRequests() = pullRequests {
   }
 }
 
+fun BuildFeatures.authenticateToECR() = dockerRegistryConnections {
+  loginToRegistry = on { dockerRegistryId = "PROJECT_EXT_107" }
+  cleanupPushedImages = true
+}
+
 fun CompoundStage.dependentBuildType(bt: BuildType) =
     buildType(bt) {
       onDependencyCancel = FailureAction.CANCEL
@@ -131,13 +158,13 @@ fun collectArtifacts(buildType: BuildType): BuildType {
 }
 
 fun BuildSteps.runMaven(
-    javaVersion: String = DEFAULT_JAVA_VERSION,
+    javaVersion: JavaVersion = DEFAULT_JAVA_VERSION,
     init: MavenBuildStep.() -> Unit
 ): MavenBuildStep {
   val maven =
       this.maven {
         dockerImagePlatform = MavenBuildStep.ImagePlatform.Linux
-        dockerImage = "eclipse-temurin:${javaVersion}-jdk"
+        dockerImage = javaVersion.dockerImage
         dockerRunParameters = "--volume /var/run/docker.sock:/var/run/docker.sock"
       }
 
@@ -163,7 +190,7 @@ fun BuildSteps.commitAndPush(
     this.name = name
     scriptContent =
         """
-          #!/bin/bash -eu              
+          #!/bin/bash -eu
          
           git add $includeFiles
           git commit -m "$commitMessage"
