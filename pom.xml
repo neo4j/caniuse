@@ -189,7 +189,7 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>2.44.2</version>
+                <version>2.46.1</version>
                 <configuration>
                     <kotlin>
                         <includes>
@@ -197,12 +197,12 @@
                             <include>src/test/kotlin/**/*.kt</include>
                         </includes>
                         <ktfmt>
-                            <version>0.46</version>
-                            <style>DEFAULT</style>
-                            <blockIndent>4</blockIndent>
+                            <version>0.54</version>
+                            <style>META</style>
+                            <blockIndent>2</blockIndent>
                             <continuationIndent>4</continuationIndent>
                             <removeUnusedImports>true</removeUnusedImports>
-                            <maxWidth>120</maxWidth>
+                            <maxWidth>100</maxWidth>
                         </ktfmt>
                         <toggleOffOn/>
                     </kotlin>
