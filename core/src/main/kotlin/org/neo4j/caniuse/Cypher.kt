@@ -252,6 +252,14 @@ object Cypher {
    *
    * @return [Neo4jPredicate]
    */
+  @PartiallyIntroducedIn(
+      2025,
+      11,
+      0,
+      "although the feature was first introduced in 2025.11.0, a critical bug affecting it " +
+          "was fixed in 2026.01.4, so we consider the feature to be only reliably usable starting " +
+          "from that version",
+  )
   fun dynamicLabelsAndTypesCanLeveragePropertyIndices(): Neo4jPredicate {
     return Neo4jPredicate {
       (it.version >= V2026_01_4) ||
