@@ -572,12 +572,13 @@ internal class CanIUseTest {
       "false,enterprise,5,26",
       "false,community,2025,1",
       "false,community,2025,10",
-      "true,enterprise,2025,11",
-      "true,enterprise,2025,12",
+      "false,enterprise,2025,11",
+      "false,enterprise,2025,12",
+      "false,enterprise,2026,1,0",
+      "true,enterprise,2026,1,4",
+      "true,enterprise,2026,2",
       "false,aura,5,26",
       "true,aura,5,27",
-      "true,aura,2025,11",
-      "true,aura,2026,1",
   )
   @ParameterizedTest
   fun supports_dynamic_labels_and_types_can_leverage_property_indices(
