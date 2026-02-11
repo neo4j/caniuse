@@ -1,7 +1,7 @@
 package org.neo4j.caniuse
 
-import org.neo4j.caniuse.Versions.V2025_11_0
 import org.neo4j.caniuse.Versions.V2025_6_0
+import org.neo4j.caniuse.Versions.V2026_01_4
 import org.neo4j.caniuse.Versions.V4_0_0
 import org.neo4j.caniuse.Versions.V4_1_3
 import org.neo4j.caniuse.Versions.V4_3_0
@@ -254,7 +254,7 @@ object Cypher {
    */
   fun dynamicLabelsAndTypesCanLeveragePropertyIndices(): Neo4jPredicate {
     return Neo4jPredicate {
-      (it.version >= V2025_11_0) ||
+      (it.version >= V2026_01_4) ||
           (it.deploymentType == Neo4jDeploymentType.AURA && it.version >= V5_27_0)
     }
   }
