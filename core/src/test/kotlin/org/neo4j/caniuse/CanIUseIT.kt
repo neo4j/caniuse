@@ -256,6 +256,11 @@ class CanIUseIT {
         "WITH 1 AS a CALL (a) { RETURN a AS b } RETURN b")
   }
 
+  @Test
+  fun supports_finish_clause() {
+    verify(Cypher::finishClause, "MERGE (p:Person) FINISH")
+  }
+
   private fun constraintNameOrEmpty(neo4j: Neo4j, name: String): String =
       if (canIUse(Cypher.namedConstraints()).withNeo4j(neo4j)) {
         name

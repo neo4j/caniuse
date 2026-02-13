@@ -19,6 +19,7 @@ import org.neo4j.caniuse.Cypher.dynamicLabelsAndTypesCanLeveragePropertyIndices
 import org.neo4j.caniuse.Cypher.explicitCypher25Selection
 import org.neo4j.caniuse.Cypher.explicitCypher5Selection
 import org.neo4j.caniuse.Cypher.explicitCypherSelection
+import org.neo4j.caniuse.Cypher.finishClause
 import org.neo4j.caniuse.Cypher.matchDynamicLabels
 import org.neo4j.caniuse.Cypher.matchDynamicTypes
 import org.neo4j.caniuse.Cypher.mergeDynamicLabels
@@ -611,5 +612,31 @@ internal class CanIUseTest {
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j,
   ) {
     assertThat(canIUse(callSubqueryWithVariableScopeClause()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,4,4",
+      "false,enterprise,4,4",
+      "false,community,5,5",
+      "false,enterprise,5,5",
+      "true,community,5,19",
+      "true,enterprise,5,19",
+      "true,community,5,26",
+      "true,enterprise,5,26",
+      "true,community,2025,1",
+      "true,community,2025,10",
+      "true,enterprise,2025,11",
+      "true,enterprise,2025,12",
+      "true,aura,5,23",
+      "true,aura,5,27",
+      "true,aura,2025,11",
+      "true,aura,2026,1",
+  )
+  @ParameterizedTest
+  fun supports_finish_clause(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j,
+  ) {
+    assertThat(canIUse(finishClause()).withNeo4j(neo4j)).isEqualTo(result)
   }
 }

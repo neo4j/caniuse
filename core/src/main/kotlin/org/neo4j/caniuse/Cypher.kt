@@ -7,6 +7,7 @@ import org.neo4j.caniuse.Versions.V4_1_3
 import org.neo4j.caniuse.Versions.V4_3_0
 import org.neo4j.caniuse.Versions.V4_4_0
 import org.neo4j.caniuse.Versions.V5_18_0
+import org.neo4j.caniuse.Versions.V5_19_0
 import org.neo4j.caniuse.Versions.V5_21_0
 import org.neo4j.caniuse.Versions.V5_23_0
 import org.neo4j.caniuse.Versions.V5_24_0
@@ -274,5 +275,14 @@ object Cypher {
    */
   fun callSubqueryWithVariableScopeClause(): Neo4jPredicate {
     return Neo4jPredicate { it.version >= V5_23_0 }
+  }
+
+  /**
+   * Whether `FINISH` clause is supported as a termination for queries.
+   *
+   * @return [Neo4jPredicate]
+   */
+  fun finishClause(): Neo4jPredicate {
+    return Neo4jPredicate { it.version >= V5_19_0 }
   }
 }
