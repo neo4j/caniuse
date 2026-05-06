@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
 
-./mvnw sortpom:sort spotless:apply license:format
+$(git rev-parse --show-toplevel)/mvnw spotless:apply -f .teamcity
+$(git rev-parse --show-toplevel)/mvnw sortpom:sort spotless:apply license:format
+
 git update-index --again
