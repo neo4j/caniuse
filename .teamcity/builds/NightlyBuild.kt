@@ -23,7 +23,7 @@ class NightlyBuild(name: String) :
             it.thisVcs()
 
             it.features {
-              authenticateToECR()
+              loginToECR()
               enableCommitStatusPublisher()
             }
 

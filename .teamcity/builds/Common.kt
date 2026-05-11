@@ -105,6 +105,11 @@ const val NODE_DOCKER_IMAGE = "%ecr-registry-connectors%:node-24-latest"
 
 const val SEMGREP_DOCKER_IMAGE = "%ecr-registry-connectors%:semgrep-latest"
 
+// Look into Root Project's settings -> Connections
+const val ECR_CONNECTION_ID_ENG = "PROJECT_EXT_124"
+const val ECR_CONNECTION_ID_BUILD = "PROJECT_EXT_107"
+val DOCKER_REGISTRIES = sequenceOf(ECR_CONNECTION_ID_ENG, ECR_CONNECTION_ID_BUILD)
+
 enum class LinuxSize(val value: String) {
   SMALL("small"),
   LARGE("large")
@@ -136,9 +141,9 @@ fun BuildFeatures.enablePullRequests() = pullRequests {
   }
 }
 
-fun BuildFeatures.authenticateToECR() = dockerRegistryConnections {
-  loginToRegistry = on { dockerRegistryId = "PROJECT_EXT_107" }
+fun BuildFeatures.loginToECR() = dockerRegistryConnections {
   cleanupPushedImages = true
+  loginToRegistry = on { dockerRegistryId = DOCKER_REGISTRIES.joinToString(",") }
 }
 
 fun CompoundStage.dependentBuildType(bt: BuildType) =
