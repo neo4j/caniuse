@@ -52,18 +52,36 @@ class CanIUseIT {
   fun supports_call_in_transactions_with_composite_databases() {
     verify(
         Cypher::callInTransactionsWithCompositeDatabases,
-        ("UNWIND graph.names() AS graphName CALL { " +
-            "  USE graph.byName( graphName ) " +
-            "  MATCH (n) " +
-            "  RETURN elementId(n) AS id " +
-            "} " +
-            "CALL { " +
-            "  USE graph.byName( graphName ) " +
-            "  WITH id " +
-            "  MATCH (n) " +
-            "  WHERE elementId(n) = id " +
-            "  DETACH DELETE n " +
-            "} IN TRANSACTIONS"),
+        { neo4j ->
+          if (canIUse(Cypher.callSubqueryWithVariableScopeClause()).withNeo4j(neo4j)) {
+            "UNWIND graph.names() AS graphName " +
+                "CALL (graphName) { " +
+                "  USE graph.byName(graphName) " +
+                "  MATCH (n) " +
+                "  RETURN elementId(n) AS id " +
+                "} " +
+                "CALL (graphName, id) { " +
+                "  USE graph.byName(graphName) " +
+                "  MATCH (n) " +
+                "  WHERE elementId(n) = id " +
+                "  DETACH DELETE n " +
+                "} IN TRANSACTIONS"
+          } else {
+            "UNWIND graph.names() AS graphName " +
+                "CALL { " +
+                "  USE graph.byName(graphName) " +
+                "  MATCH (n) " +
+                "  RETURN elementId(n) AS id " +
+                "} " +
+                "CALL { " +
+                "  USE graph.byName(graphName) " +
+                "  WITH id " +
+                "  MATCH (n) " +
+                "  WHERE elementId(n) = id " +
+                "  DETACH DELETE n " +
+                "} IN TRANSACTIONS"
+          }
+        },
         SessionConfig.forDatabase("inventory"))
   }
 

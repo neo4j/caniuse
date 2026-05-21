@@ -99,6 +99,10 @@ val NEO4J_VERSIONS =
         "2025.10",
         "2025.11",
         "2025.12",
+        "2026.01",
+        "2026.02",
+        "2026.03",
+        "2026.04",
     )
 
 const val NODE_DOCKER_IMAGE = "%ecr-registry-connectors%:node-24-latest"
