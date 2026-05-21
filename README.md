@@ -1,4 +1,4 @@
-# Neo4j: Can I Use <X>?
+# Neo4j: Can I Use \<X\>?
 
 **This is an INTERNAL library designed to be used within official Neo4j products. No guarantees are made regarding its API stability and support.**
 
