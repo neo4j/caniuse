@@ -220,7 +220,7 @@ class CanIUseIT {
 
   @Test
   fun supports_cypher_version_25() {
-    verifyWithArgument(Cypher::cypherVersion, "25", "CYPHER 25 tanh(0.5)")
+    verifyWithArgument(Cypher::cypherVersion, "25", "CYPHER 25 RETURN 42")
   }
 
   @Test
