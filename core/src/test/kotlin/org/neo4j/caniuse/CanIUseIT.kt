@@ -214,6 +214,16 @@ class CanIUseIT {
   }
 
   @Test
+  fun supports_cypher_version_5() {
+    verifyWithArgument(Cypher::cypherVersion, "5", "CYPHER 5 RETURN 42")
+  }
+
+  @Test
+  fun supports_cypher_version_25() {
+    verifyWithArgument(Cypher::cypherVersion, "25", "CYPHER 25 tanh(0.5)")
+  }
+
+  @Test
   fun supports_change_data_capture() {
     verify(
         Dbms::changeDataCapture,
@@ -302,6 +312,15 @@ class CanIUseIT {
         ""
       }
 
+  private fun verifyWithArgument(
+      check: KFunction<Neo4jPredicate>,
+      argument: String,
+      query: String
+  ) {
+    val neo4j = Neo4jDetector.detect(driver)
+    doVerify(check, neo4j, query, SessionConfig.forDatabase("neo4j"), argument)
+  }
+
   private fun verify(
       check: KFunction<Neo4jPredicate>,
       queryGenerator: (neo4j: Neo4j) -> String,
@@ -325,9 +344,16 @@ class CanIUseIT {
       check: KFunction<Neo4jPredicate>,
       neo4j: Neo4j,
       query: String,
-      config: SessionConfig
+      config: SessionConfig,
+      argument: Any? = null
   ) {
-    if (canIUse(check.call()).withNeo4j(neo4j) || partiallyIntroducedBefore(check, neo4j)) {
+    val predicate =
+        if (argument != null) {
+          check.call(argument)
+        } else {
+          check.call()
+        }
+    if (canIUse(predicate).withNeo4j(neo4j) || partiallyIntroducedBefore(check, neo4j)) {
       assertThatCode { runQuery(query, config) }.doesNotThrowAnyException()
     } else {
       assertThatThrownBy { runQuery(query, config) }.isInstanceOf(Neo4jException::class.java)
