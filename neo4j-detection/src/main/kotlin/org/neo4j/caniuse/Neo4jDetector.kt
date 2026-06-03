@@ -38,6 +38,8 @@ object Neo4jDetector {
 
   private const val NEO4J_KERNEL = "Neo4j Kernel"
 
+  private val FIRST_PREAMBLE_VERSION = Neo4jVersion(5, 21, 0)
+
   /**
    * [detect] runs with the provided [Driver] to automatically detect the characteristics of the
    * Neo4j target.
@@ -54,13 +56,12 @@ object Neo4jDetector {
       val records = result.list()
 
       // check error states
-      when (records.size) {
-        0 -> throw IllegalStateException("Could not find Neo4j Kernel or Cypher")
-        1 ->
+      when {
+        records.isEmpty() || records.size > 2 ->
+            throw IllegalStateException("Could not find Neo4j Kernel or Cypher")
+        else ->
             records[0].get("name").asString().takeIf { it == NEO4J_KERNEL }
                 ?: throw IllegalStateException("Invalid dbms.components() response from server")
-        in 3..Int.MAX_VALUE ->
-            throw IllegalStateException("Invalid dbms.components() response from server")
       }
 
       var rawVersion = ""
@@ -85,8 +86,7 @@ object Neo4jDetector {
       val version = Neo4jVersionParser.parse(rawVersion)
 
       if (rawCyphers.isEmpty()) {
-        // TODO: Can we use org.neo4j.caniuse.Cypher#explicitCypherSelection
-        if (version >= Neo4jVersion(5, 21, 0)) {
+        if (version >= FIRST_PREAMBLE_VERSION) {
           rawCyphers = setOf("5")
         }
       }
