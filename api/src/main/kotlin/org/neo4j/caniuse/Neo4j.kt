@@ -24,6 +24,7 @@ data class Neo4j(
     val version: Neo4jVersion,
     val edition: Neo4jEdition,
     val deploymentType: Neo4jDeploymentType,
+    val cypherVersions: Set<String> = emptySet(),
 ) : Serializable {
   companion object {}
 }

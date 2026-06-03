@@ -17,6 +17,7 @@
 package org.neo4j.caniuse
 
 import org.neo4j.driver.Driver
+import org.neo4j.driver.Value
 
 /**
  * [detectedWith] runs with the provided [Driver] to automatically detect the characteristics of the
@@ -32,6 +33,13 @@ fun Neo4j.Companion.detectedWith(driver: Driver): Neo4j {
 }
 
 object Neo4jDetector {
+
+  private const val CYPHER = "Cypher"
+
+  private const val NEO4J_KERNEL = "Neo4j Kernel"
+
+  private val FIRST_PREAMBLE_VERSION = Neo4jVersion(5, 21, 0)
+
   /**
    * [detect] runs with the provided [Driver] to automatically detect the characteristics of the
    * Neo4j target.
@@ -40,19 +48,50 @@ object Neo4jDetector {
    */
   fun detect(driver: Driver): Neo4j {
     driver.session().use { session ->
-      val params = mapOf("name" to "Neo4j Kernel")
+      val params = mapOf("names" to listOf(CYPHER, NEO4J_KERNEL))
       val result: org.neo4j.driver.Result =
           session.run(
-              "CALL dbms.components() YIELD name, edition, versions WHERE name = \$name " +
-                  "RETURN edition, versions[0] AS version LIMIT 1",
+              "CALL dbms.components() YIELD name, edition, versions WHERE name IN \$names RETURN name, edition, versions",
               params)
-      val record = result.single()
-      val rawVersion = record.get("version").asString()
-      return Neo4j(
-          Neo4jVersionParser.parse(rawVersion),
-          parseEdition(record.get("edition").asString()),
-          parseDeploymentType(rawVersion),
-      )
+      val records = result.list()
+
+      // check error states
+      when {
+        records.isEmpty() || records.size > 2 ->
+            throw IllegalStateException("Could not find Neo4j Kernel or Cypher")
+        else ->
+            records[0].get("name").asString().takeIf { it == NEO4J_KERNEL }
+                ?: throw IllegalStateException("Invalid dbms.components() response from server")
+      }
+
+      var rawVersion = ""
+      var rawEdition = ""
+      var rawCyphers: Set<String> = setOf()
+
+      records.forEach { record ->
+        when (record.get("name").asString()) {
+          NEO4J_KERNEL -> {
+            rawVersion =
+                record.get("versions").asList(Value::asString).singleOrNull()
+                    ?: throw IllegalStateException("Could not find version")
+            rawEdition = record.get("edition").asString()
+          }
+
+          CYPHER -> {
+            rawCyphers = record.get("versions").asList(Value::asString).toSet()
+          }
+        }
+      }
+
+      val version = Neo4jVersionParser.parse(rawVersion)
+
+      if (rawCyphers.isEmpty()) {
+        if (version >= FIRST_PREAMBLE_VERSION) {
+          rawCyphers = setOf("5")
+        }
+      }
+
+      return Neo4j(version, parseEdition(rawEdition), parseDeploymentType(rawVersion), rawCyphers)
     }
   }
 
