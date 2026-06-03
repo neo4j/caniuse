@@ -246,13 +246,13 @@ object Cypher {
   }
 
   /**
-   * Whether the given Cypher version is supported.
+   * Whether the given Cypher version is supported or not.
    *
-   * @param x Cypher version to check for, e.g. "5" or "25"
+   * @param version Cypher version to check for, e.g. "5" or "25"
    * @return [Neo4jPredicate]
    */
-  fun cypherVersion(x: String): Neo4jPredicate {
-    return Neo4jPredicate { it.cypherVersions.contains(x) }
+  fun version(version: String): Neo4jPredicate {
+    return Neo4jPredicate { it.cypherVersions.contains(version) }
   }
 
   /**

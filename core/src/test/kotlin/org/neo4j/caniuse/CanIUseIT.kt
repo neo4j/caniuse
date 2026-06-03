@@ -215,12 +215,12 @@ class CanIUseIT {
 
   @Test
   fun supports_cypher_version_5() {
-    verifyWithArgument(Cypher::cypherVersion, "5", "CYPHER 5 RETURN 42")
+    verifyWithArgument(Cypher::version, "5", "CYPHER 5 RETURN 42")
   }
 
   @Test
   fun supports_cypher_version_25() {
-    verifyWithArgument(Cypher::cypherVersion, "25", "CYPHER 25 RETURN 42")
+    verifyWithArgument(Cypher::version, "25", "CYPHER 25 RETURN 42")
   }
 
   @Test

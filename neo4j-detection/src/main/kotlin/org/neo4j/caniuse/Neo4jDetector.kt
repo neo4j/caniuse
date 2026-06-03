@@ -82,11 +82,16 @@ object Neo4jDetector {
         }
       }
 
-      return Neo4j(
-          Neo4jVersionParser.parse(rawVersion),
-          parseEdition(rawEdition),
-          parseDeploymentType(rawVersion),
-          rawCyphers)
+      val version = Neo4jVersionParser.parse(rawVersion)
+
+      if (rawCyphers.isEmpty()) {
+        // TODO: Can we use org.neo4j.caniuse.Cypher#explicitCypherSelection
+        if (version >= Neo4jVersion(5, 21, 0)) {
+          rawCyphers = setOf("5")
+        }
+      }
+
+      return Neo4j(version, parseEdition(rawEdition), parseDeploymentType(rawVersion), rawCyphers)
     }
   }
 
