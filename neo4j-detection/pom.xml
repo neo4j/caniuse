@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.neo4j</groupId>
         <artifactId>caniuse-parent</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.1-SNAPSHOT</version>
     </parent>
     <artifactId>caniuse-neo4j-detection</artifactId>
     <name>caniuse-neo4j-detection</name>
