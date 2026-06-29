@@ -3,7 +3,7 @@
     "@commitlint/cli": "^21.0.2",
     "@commitlint/config-conventional": "^21.1.0",
     "@commitlint/lint": "^21.0.2",
-    "@commitlint/load": "^21.0.2",
+    "@commitlint/load": "^21.1.0",
     "danger": "^13.0.8",
     "husky": "^9.1.7"
   },
