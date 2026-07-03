@@ -27,7 +27,7 @@ class Neo4jAggregator : ArgumentsAggregator {
   override fun aggregateArguments(accessor: ArgumentsAccessor, context: ParameterContext): Any {
     var deploymentType = Neo4jDeploymentType.SELF_MANAGED
     val edition: Neo4jEdition =
-        when (accessor.getString(1).uppercase()) {
+        when (accessor.getString(1)!!.uppercase()) {
           "AURA" -> {
             deploymentType = Neo4jDeploymentType.AURA
             Neo4jEdition.ENTERPRISE
@@ -47,10 +47,10 @@ class Neo4jAggregator : ArgumentsAggregator {
 
   companion object {
     private fun getVersion(accessor: ArgumentsAccessor): Neo4jVersion {
-      val major = accessor.getString(2).toInt(10)
-      val minor = accessor.getString(3).toInt(10)
+      val major = accessor.getString(2)!!.toInt(10)
+      val minor = accessor.getString(3)!!.toInt(10)
       return if (accessor.size() == 5) {
-        val patch = accessor.getString(4).toInt(10)
+        val patch = accessor.getString(4)!!.toInt(10)
         Neo4jVersion(major, minor, patch)
       } else {
         Neo4jVersion(major, minor)
