@@ -24,7 +24,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.neo4j.caniuse.CanIUse.canIUse
 import org.neo4j.caniuse.Dbms.compositeDatabases
-import org.neo4j.caniuse.Schema.nodePropertyUniquenessConstraints
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
