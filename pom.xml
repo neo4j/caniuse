@@ -48,7 +48,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <neo4j-java-driver-slim.version>4.4.26</neo4j-java-driver-slim.version>
-        <netty-bom.version>4.1.135.Final</netty-bom.version>
+        <netty-bom.version>4.1.136.Final</netty-bom.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j-nop.version>2.0.18</slf4j-nop.version>
         <testcontainers.version>1.21.4</testcontainers.version>
