@@ -12,7 +12,7 @@
   },
   "overrides": {
     "danger": {
-      "qs": "6.15.2"
+      "undici": "6.27.0"
     }
   }
 }
