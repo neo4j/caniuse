@@ -18,8 +18,8 @@ importers:
         specifier: ^21.2.0
         version: 21.2.0
       '@commitlint/lint':
-        specifier: ^21.2.0
-        version: 21.2.0
+        specifier: ^21.2.2
+        version: 21.2.2
       '@commitlint/load':
         specifier: ^21.2.0
         version: 21.2.0(@types/node@26.1.2)(typescript@7.0.2)
@@ -69,16 +69,8 @@ packages:
     resolution: {integrity: sha512-v6fvxZSc/AvVMROlr3H34+1766bZSYApRUSCAMjWamStPjKMvZ8GdvVA5YW/VQNgbFTmcMz6OYmSTJEvIjPrfA==}
     engines: {node: '>=22.12.0'}
 
-  '@commitlint/is-ignored@21.2.0':
-    resolution: {integrity: sha512-4/eB0vBN7L88O/oC4ajAEqi7j2ZfNgxl/+11RfAV9YosejZgDXhY2C9VcHnHJhOzPLoSy5P3Mg/46kqeyJfXKw==}
-    engines: {node: '>=22.12.0'}
-
   '@commitlint/is-ignored@21.2.2':
     resolution: {integrity: sha512-9UoKNgfFE3LU7FrzierCvk3CdDfMDeVGC86qZiT/n0TIjfq/dmZ9MHuXd45OTNRa26ZanmJRxEtmiXk/lEJihg==}
-    engines: {node: '>=22.12.0'}
-
-  '@commitlint/lint@21.2.0':
-    resolution: {integrity: sha512-ceO5dp9pLjEZ6y6qbq/uXWXDPykqqlTsyzoQ0NzecpisSJhK3kTy9qzQoPeJuWG/IMNdV1lO0RgmzqoAlSi1uw==}
     engines: {node: '>=22.12.0'}
 
   '@commitlint/lint@21.2.2':
@@ -97,10 +89,6 @@ packages:
     resolution: {integrity: sha512-YxGoiXD/HXNXLJPrQwE5poXa+XH0CBEm+mdvbHQP0g6MV/dmJyUFCzPNzZbxL93GvZ70TmtTK0Z0/IBpAqHv8g==}
     engines: {node: '>=22.12.0'}
 
-  '@commitlint/parse@21.2.0':
-    resolution: {integrity: sha512-QHWxG4d0PLTF634/AdyZ0MQS+CLn5YOuJlCFhMMlSGKFxzYGUetkHBj18xgBD+6fVzUrA2lrCdi/vlS2f/oYXg==}
-    engines: {node: '>=22.12.0'}
-
   '@commitlint/parse@21.2.2':
     resolution: {integrity: sha512-MEkobPfvRp+z06Wro8HMG1BDGHzZmj82A1LH1nWeG3ipHpg/x4m6v3wEDvMBIKjRFUnfR3nBeFs3MVCr7UdAmg==}
     engines: {node: '>=22.12.0'}
@@ -115,10 +103,6 @@ packages:
 
   '@commitlint/resolve-extends@21.2.2':
     resolution: {integrity: sha512-RPkJ/IFi7sMUUVbZLqwWFtWw/zRDcfFsmrPSiTMrt5wb7AdxOr86EGQFvmGzef5QKV5IPBWWCujqVTw1RWX44A==}
-    engines: {node: '>=22.12.0'}
-
-  '@commitlint/rules@21.2.0':
-    resolution: {integrity: sha512-C2yXMNpiB8ETZKfx5JD8+ExgF8vTU1VQMKPSUUYwqKpw9oJWQBrlXBpdU038mj2WPjof7o9UzFpmTyBeGMZwZg==}
     engines: {node: '>=22.12.0'}
 
   '@commitlint/rules@21.2.2':
@@ -420,10 +404,6 @@ packages:
 
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
-
-  conventional-changelog-angular@9.2.1:
-    resolution: {integrity: sha512-oWSL6ZhnXbYraOFTK3PgRAQJ8fADDAEv5K6AdeyQPLvjFmhG8+ejL0jZZp/R7vTmGJaBvZEE+sE7dB4bCv7sAw==}
-    engines: {node: '>=22'}
 
   conventional-changelog-angular@9.3.0:
     resolution: {integrity: sha512-0MWQLVUT1oVCsUGs9aAWteBVxPlLwJTn5VbQH7B0B3fDizZgrJ9QGnKl/2mp1+5P7153GCBCjO/v1aKJ6eysCg==}
@@ -912,22 +892,10 @@ snapshots:
       '@commitlint/types': 21.2.0
       picocolors: 1.1.1
 
-  '@commitlint/is-ignored@21.2.0':
-    dependencies:
-      '@commitlint/types': 21.2.0
-      semver: 7.8.5
-
   '@commitlint/is-ignored@21.2.2':
     dependencies:
       '@commitlint/types': 21.2.0
       semver: 7.8.5
-
-  '@commitlint/lint@21.2.0':
-    dependencies:
-      '@commitlint/is-ignored': 21.2.0
-      '@commitlint/parse': 21.2.0
-      '@commitlint/rules': 21.2.0
-      '@commitlint/types': 21.2.0
 
   '@commitlint/lint@21.2.2':
     dependencies:
@@ -968,12 +936,6 @@ snapshots:
 
   '@commitlint/message@21.2.0': {}
 
-  '@commitlint/parse@21.2.0':
-    dependencies:
-      '@commitlint/types': 21.2.0
-      conventional-changelog-angular: 9.2.1
-      conventional-commits-parser: 7.1.2
-
   '@commitlint/parse@21.2.2':
     dependencies:
       '@commitlint/types': 21.2.0
@@ -1005,13 +967,6 @@ snapshots:
       es-toolkit: 1.50.0
       global-directory: 5.0.0
       resolve-from: 5.0.0
-
-  '@commitlint/rules@21.2.0':
-    dependencies:
-      '@commitlint/ensure': 21.2.0
-      '@commitlint/message': 21.2.0
-      '@commitlint/to-lines': 21.0.1
-      '@commitlint/types': 21.2.0
 
   '@commitlint/rules@21.2.2':
     dependencies:
@@ -1255,10 +1210,6 @@ snapshots:
   colors@1.4.0: {}
 
   commander@2.20.3: {}
-
-  conventional-changelog-angular@9.2.1:
-    dependencies:
-      '@conventional-changelog/template': 1.2.1
 
   conventional-changelog-angular@9.3.0:
     dependencies:
