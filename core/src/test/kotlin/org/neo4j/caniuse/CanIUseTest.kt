@@ -48,6 +48,7 @@ import org.neo4j.caniuse.Cypher.setDynamicLabels
 import org.neo4j.caniuse.Cypher.setDynamicPropertyKeys
 import org.neo4j.caniuse.Cypher.showConstraints
 import org.neo4j.caniuse.Cypher.showIndexes
+import org.neo4j.caniuse.Dbms.cdcTransactionCommitTime
 import org.neo4j.caniuse.Dbms.changeDataCapture
 import org.neo4j.caniuse.Dbms.compositeDatabases
 import org.neo4j.caniuse.Dbms.multiDatabase
@@ -654,5 +655,35 @@ internal class CanIUseTest {
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j,
   ) {
     assertThat(canIUse(finishClause()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,4,4",
+      "false,enterprise,4,4",
+      "false,community,5,5",
+      "false,enterprise,5,5",
+      "false,community,5,19",
+      "false,enterprise,5,19",
+      "false,community,5,26",
+      "false,enterprise,5,26",
+      "false,community,2025,1",
+      "false,community,2025,10",
+      "false,enterprise,2025,11",
+      "false,enterprise,2025,12",
+      "false,community,5,23",
+      "false,enterprise,5,23",
+      "false,enterprise,2026,4",
+      "false,community,2026,5",
+      "false,enterprise,2026,5",
+      "true,enterprise,2026,6",
+      "true,aura,2026,6",
+      "true,enterprise,2026,6,0",
+      "true,enterprise,2026,7")
+  @ParameterizedTest
+  fun supports_cdc_transaction_commit_time(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j
+  ) {
+    assertThat(canIUse(cdcTransactionCommitTime()).withNeo4j(neo4j)).isEqualTo(result)
   }
 }
