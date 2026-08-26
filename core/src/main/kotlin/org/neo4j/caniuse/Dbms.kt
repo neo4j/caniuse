@@ -68,7 +68,8 @@ object Dbms {
    * @return [Neo4jPredicate]
    */
   fun cdcTransactionCommitTime(): Neo4jPredicate {
-    return changeDataCapture().and(Neo4jPredicate { it.version >= V2026_6_0 })
+    return changeDataCapture()
+        .and(Neo4jPredicate { it.version >= V2026_6_0 })
         .and(Cypher.version("25"))
   }
 }

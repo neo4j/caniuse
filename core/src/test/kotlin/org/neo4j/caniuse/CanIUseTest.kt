@@ -665,22 +665,34 @@ internal class CanIUseTest {
 
     val cyphers = setOf("5", "25")
 
-    assertThat(canIUse(cdcTransactionCommitTime()).withNeo4j(
-        neo4j(Neo4jVersion(5, 26, 0), Neo4jEdition.ENTERPRISE, setOf("5")))).isFalse()
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(5, 26, 0), Neo4jEdition.ENTERPRISE, setOf("5"))))
+        .isFalse()
 
-    assertThat(canIUse(cdcTransactionCommitTime()).withNeo4j(
-        neo4j(Neo4jVersion(2026, 6, 0), Neo4jEdition.ENTERPRISE, cyphers))).isTrue()
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 6, 0), Neo4jEdition.ENTERPRISE, cyphers)))
+        .isTrue()
 
-    assertThat(canIUse(cdcTransactionCommitTime()).withNeo4j(
-        neo4j(Neo4jVersion(2026, 7, 1), Neo4jEdition.ENTERPRISE, cyphers))).isTrue()
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 7, 1), Neo4jEdition.ENTERPRISE, cyphers)))
+        .isTrue()
 
-    assertThat(canIUse(cdcTransactionCommitTime()).withNeo4j(
-        neo4j(Neo4jVersion(2026, 6, 0), Neo4jEdition.ENTERPRISE, setOf("5")))).isFalse()
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 6, 0), Neo4jEdition.ENTERPRISE, setOf("5"))))
+        .isFalse()
 
-    assertThat(canIUse(cdcTransactionCommitTime()).withNeo4j(
-        neo4j(Neo4jVersion(2026, 5, 0), Neo4jEdition.ENTERPRISE, cyphers))).isFalse()
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 5, 0), Neo4jEdition.ENTERPRISE, cyphers)))
+        .isFalse()
 
-    assertThat(canIUse(cdcTransactionCommitTime()).withNeo4j(
-        neo4j(Neo4jVersion(2026, 6, 0), Neo4jEdition.COMMUNITY, cyphers))).isFalse()
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 6, 0), Neo4jEdition.COMMUNITY, cyphers)))
+        .isFalse()
   }
 }
