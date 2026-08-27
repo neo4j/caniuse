@@ -309,8 +309,7 @@ class CanIUseIT {
   fun supports_cdc_transaction_commit_time() {
     verify(
         Dbms::cdcTransactionCommitTime,
-        "CYPHER 25 CALL db.cdc.current() YIELD txCommitTime RETURN txCommitTime"
-    )
+        "CYPHER 25 CALL db.cdc.current() YIELD txCommitTime RETURN txCommitTime")
   }
 
   private fun constraintNameOrEmpty(neo4j: Neo4j, name: String): String =
