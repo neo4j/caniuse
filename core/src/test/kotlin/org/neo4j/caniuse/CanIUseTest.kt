@@ -17,6 +17,7 @@
 package org.neo4j.caniuse
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.aggregator.AggregateWith
 import org.junit.jupiter.params.provider.CsvSource
@@ -48,6 +49,7 @@ import org.neo4j.caniuse.Cypher.setDynamicLabels
 import org.neo4j.caniuse.Cypher.setDynamicPropertyKeys
 import org.neo4j.caniuse.Cypher.showConstraints
 import org.neo4j.caniuse.Cypher.showIndexes
+import org.neo4j.caniuse.Dbms.cdcTransactionCommitTime
 import org.neo4j.caniuse.Dbms.changeDataCapture
 import org.neo4j.caniuse.Dbms.compositeDatabases
 import org.neo4j.caniuse.Dbms.multiDatabase
@@ -654,5 +656,43 @@ internal class CanIUseTest {
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j,
   ) {
     assertThat(canIUse(finishClause()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @Test
+  fun supports_cdc_transaction_commit_time() {
+    fun neo4j(v: Neo4jVersion, edition: Neo4jEdition, cyphers: Set<String>) =
+        Neo4j(v, edition, Neo4jDeploymentType.SELF_MANAGED, cyphers)
+
+    val cyphers = setOf("5", "25")
+
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(5, 26, 0), Neo4jEdition.ENTERPRISE, setOf("5"))))
+        .isFalse()
+
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 6, 0), Neo4jEdition.ENTERPRISE, cyphers)))
+        .isTrue()
+
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 7, 1), Neo4jEdition.ENTERPRISE, cyphers)))
+        .isTrue()
+
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 6, 0), Neo4jEdition.ENTERPRISE, setOf("5"))))
+        .isFalse()
+
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 5, 0), Neo4jEdition.ENTERPRISE, cyphers)))
+        .isFalse()
+
+    assertThat(
+            canIUse(cdcTransactionCommitTime())
+                .withNeo4j(neo4j(Neo4jVersion(2026, 6, 0), Neo4jEdition.COMMUNITY, cyphers)))
+        .isFalse()
   }
 }

@@ -24,7 +24,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.neo4j.caniuse.CanIUse.canIUse
 import org.neo4j.caniuse.Dbms.compositeDatabases
-import org.neo4j.caniuse.Schema.nodePropertyUniquenessConstraints
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
@@ -305,6 +304,13 @@ class CanIUseIT {
     verify(Cypher::finishClause, "MERGE (p:Person) FINISH")
   }
 
+  @Test
+  fun supports_cdc_transaction_commit_time() {
+    verify(
+        Dbms::cdcTransactionCommitTime,
+        "CYPHER 25 CALL db.cdc.current() YIELD txCommitTime RETURN txCommitTime")
+  }
+
   private fun constraintNameOrEmpty(neo4j: Neo4j, name: String): String =
       if (canIUse(Cypher.namedConstraints()).withNeo4j(neo4j)) {
         name
@@ -386,9 +392,17 @@ class CanIUseIT {
     fun beforeAll() {
       driver = GraphDatabase.driver(neo4j.boltUrl, AuthTokens.basic("neo4j", "letmein!"))
       driver.verifyConnectivity()
-      if (canIUse(compositeDatabases()).withNeo4j(Neo4jDetector.detect(driver))) {
+      val neo4j = Neo4jDetector.detect(driver)
+      if (canIUse(compositeDatabases()).withNeo4j(neo4j)) {
         driver.session(SessionConfig.forDatabase("system")).use { session ->
-          session.run("CREATE OR REPLACE COMPOSITE DATABASE inventory")
+          session.run("CREATE OR REPLACE COMPOSITE DATABASE inventory").consume()
+        }
+      }
+
+      // db.cdc.current() procedure requires CDC to be enabled and it is off by default
+      if (canIUse(Dbms.changeDataCapture()).withNeo4j(neo4j)) {
+        driver.session(SessionConfig.forDatabase("system")).use { session ->
+          session.run("ALTER DATABASE neo4j SET OPTION txLogEnrichment 'FULL' WAIT").consume()
         }
       }
     }
