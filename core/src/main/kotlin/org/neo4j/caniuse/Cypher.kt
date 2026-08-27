@@ -16,7 +16,7 @@
  */
 package org.neo4j.caniuse
 
-import org.neo4j.caniuse.Versions.V2025_6_0
+import org.neo4j.caniuse.Versions.V2025_06_0
 import org.neo4j.caniuse.Versions.V2026_01_4
 import org.neo4j.caniuse.Versions.V4_0_0
 import org.neo4j.caniuse.Versions.V4_1_3
@@ -226,7 +226,7 @@ object Cypher {
    */
   fun explicitCypher25Selection(): Neo4jPredicate {
     return Neo4jPredicate {
-          (it.version >= V2025_6_0) ||
+          (it.version >= V2025_06_0) ||
               (it.deploymentType == Neo4jDeploymentType.AURA && it.version >= V5_27_0)
         }
         .and(explicitCypher5Selection())
