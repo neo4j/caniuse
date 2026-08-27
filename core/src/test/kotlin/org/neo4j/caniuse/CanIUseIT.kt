@@ -395,7 +395,7 @@ class CanIUseIT {
       val neo4j = Neo4jDetector.detect(driver)
       if (canIUse(compositeDatabases()).withNeo4j(neo4j)) {
         driver.session(SessionConfig.forDatabase("system")).use { session ->
-          session.run("CREATE OR REPLACE COMPOSITE DATABASE inventory")
+          session.run("CREATE OR REPLACE COMPOSITE DATABASE inventory").consume()
         }
       }
 
