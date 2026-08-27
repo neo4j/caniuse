@@ -305,6 +305,14 @@ class CanIUseIT {
     verify(Cypher::finishClause, "MERGE (p:Person) FINISH")
   }
 
+  @Test
+  fun supports_cdc_transaction_commit_time() {
+    verify(
+        Dbms::cdcTransactionCommitTime,
+        "CYPHER 25 CALL db.cdc.current() YIELD txCommitTime RETURN txCommitTime"
+    )
+  }
+
   private fun constraintNameOrEmpty(neo4j: Neo4j, name: String): String =
       if (canIUse(Cypher.namedConstraints()).withNeo4j(neo4j)) {
         name

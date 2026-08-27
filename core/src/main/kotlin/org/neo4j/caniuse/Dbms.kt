@@ -16,7 +16,7 @@
  */
 package org.neo4j.caniuse
 
-import org.neo4j.caniuse.Versions.V2026_6_0
+import org.neo4j.caniuse.Versions.V2026_06_0
 import org.neo4j.caniuse.Versions.V4_0_0
 import org.neo4j.caniuse.Versions.V5_0_0
 import org.neo4j.caniuse.Versions.V5_13_0
@@ -69,7 +69,7 @@ object Dbms {
    */
   fun cdcTransactionCommitTime(): Neo4jPredicate {
     return changeDataCapture()
-        .and(Neo4jPredicate { it.version >= V2026_6_0 })
+        .and(Neo4jPredicate { it.version >= V2026_06_0 })
         .and(Cypher.version("25"))
   }
 }
