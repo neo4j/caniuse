@@ -24,7 +24,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.neo4j.caniuse.CanIUse.canIUse
 import org.neo4j.caniuse.Dbms.compositeDatabases
-import org.neo4j.caniuse.Schema.nodePropertyUniquenessConstraints
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
@@ -393,9 +392,17 @@ class CanIUseIT {
     fun beforeAll() {
       driver = GraphDatabase.driver(neo4j.boltUrl, AuthTokens.basic("neo4j", "letmein!"))
       driver.verifyConnectivity()
-      if (canIUse(compositeDatabases()).withNeo4j(Neo4jDetector.detect(driver))) {
+      val neo4j = Neo4jDetector.detect(driver)
+      if (canIUse(compositeDatabases()).withNeo4j(neo4j)) {
         driver.session(SessionConfig.forDatabase("system")).use { session ->
           session.run("CREATE OR REPLACE COMPOSITE DATABASE inventory")
+        }
+      }
+
+      // db.cdc.current() procedure requires CDC to be enabled and it is off by default
+      if (canIUse(Dbms.changeDataCapture()).withNeo4j(neo4j)) {
+        driver.session(SessionConfig.forDatabase("system")).use { session ->
+          session.run("ALTER DATABASE neo4j SET OPTION txLogEnrichment 'FULL' WAIT").consume()
         }
       }
     }
