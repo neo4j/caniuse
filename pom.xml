@@ -221,8 +221,9 @@
                 <version>3.6.0</version>
                 <configuration>
                     <includes>
-                        <include>**/*IT.*</include>
+                        <include>**/*IT</include>
                     </includes>
+                    <failIfNoTests>true</failIfNoTests>
                 </configuration>
                 <executions>
                     <execution>
