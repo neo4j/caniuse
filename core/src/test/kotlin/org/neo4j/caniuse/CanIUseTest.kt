@@ -49,6 +49,7 @@ import org.neo4j.caniuse.Cypher.setDynamicLabels
 import org.neo4j.caniuse.Cypher.setDynamicPropertyKeys
 import org.neo4j.caniuse.Cypher.showConstraints
 import org.neo4j.caniuse.Cypher.showIndexes
+import org.neo4j.caniuse.Cypher.uuidType
 import org.neo4j.caniuse.Dbms.cdcTransactionCommitTime
 import org.neo4j.caniuse.Dbms.changeDataCapture
 import org.neo4j.caniuse.Dbms.compositeDatabases
@@ -656,6 +657,31 @@ internal class CanIUseTest {
       @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j,
   ) {
     assertThat(canIUse(finishClause()).withNeo4j(neo4j)).isEqualTo(result)
+  }
+
+  @CsvSource(
+      "false,community,4,4",
+      "false,enterprise,4,4",
+      "false,community,5,5",
+      "false,enterprise,5,5",
+      "false,community,5,26",
+      "false,enterprise,5,26",
+      "false,community,2025,1",
+      "false,enterprise,2025,1",
+      "false,community,2025,12",
+      "false,enterprise,2025,12",
+      "false,community,2026,1",
+      "false,enterprise,2026,1",
+      "false,community,2026,7",
+      "false,enterprise,2026,7",
+      "true,community,2026,8",
+      "true,enterprise,2026,8")
+  @ParameterizedTest
+  fun supports_uuid(
+      result: Boolean,
+      @AggregateWith(Neo4jAggregator::class) neo4j: Neo4j,
+  ) {
+    assertThat(canIUse(uuidType()).withNeo4j(neo4j)).isEqualTo(result)
   }
 
   @Test

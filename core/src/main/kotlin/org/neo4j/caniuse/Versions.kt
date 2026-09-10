@@ -59,4 +59,6 @@ internal object Versions {
   internal val V2026_01_4 = Neo4jVersion(2026, 1, 4)
 
   internal val V2026_06_0 = Neo4jVersion(2026, 6, 0)
+
+  internal val V2026_08_0 = Neo4jVersion(2026, 8, 0)
 }

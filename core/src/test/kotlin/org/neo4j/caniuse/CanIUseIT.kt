@@ -305,6 +305,11 @@ class CanIUseIT {
   }
 
   @Test
+  fun supports_uuid_type() {
+    verify(Cypher::uuidType, "RETURN uuid()")
+  }
+
+  @Test
   fun supports_cdc_transaction_commit_time() {
     verify(
         Dbms::cdcTransactionCommitTime,
