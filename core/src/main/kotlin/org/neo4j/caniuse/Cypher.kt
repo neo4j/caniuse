@@ -18,6 +18,7 @@ package org.neo4j.caniuse
 
 import org.neo4j.caniuse.Versions.V2025_06_0
 import org.neo4j.caniuse.Versions.V2026_01_4
+import org.neo4j.caniuse.Versions.V2026_08_0
 import org.neo4j.caniuse.Versions.V4_0_0
 import org.neo4j.caniuse.Versions.V4_1_3
 import org.neo4j.caniuse.Versions.V4_3_0
@@ -310,5 +311,15 @@ object Cypher {
    */
   fun finishClause(): Neo4jPredicate {
     return Neo4jPredicate { it.version >= V5_19_0 }
+  }
+
+  /**
+   * Whether `UUID` type is supported. Which is first supported by bolt 6.1, first official released
+   * in 2026.08.0.
+   *
+   * @return [Neo4jPredicate]
+   */
+  fun uuidType(): Neo4jPredicate {
+    return Neo4jPredicate { it.version >= V2026_08_0 }
   }
 }
