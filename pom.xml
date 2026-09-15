@@ -44,7 +44,7 @@
         <junit-jupiter.version>5.14.4</junit-jupiter.version>
         <kotlin.version>2.4.20</kotlin.version>
         <license.id>neo4j_apache_v2</license.id>
-        <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
+        <maven-deploy-plugin.version>3.2.0</maven-deploy-plugin.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <neo4j-java-driver-slim.version>4.4.27</neo4j-java-driver-slim.version>
